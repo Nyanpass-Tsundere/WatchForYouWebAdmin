@@ -1,0 +1,56 @@
+{% extends "2row-with-msg.html" %} 
+
+{% block title %}管理室主畫面{% endblock %}
+
+{% block sideFrame %}
+<h2>手錶清單</h2>
+<div class="ui vertical menu" id="watchList">
+	<a class="active item">
+		手錶1
+	</a>
+	<a class="item">
+		手錶2
+	</a>
+	<a class="item">
+		手錶3
+	</a>
+</div>
+{% endblock %}
+
+{% block MainInfo %}
+<div class="ui secondary pointing menu">
+	<a class="active item">
+		系統通知
+	</a>
+</div>
+
+<div class="ui segment">
+	<p>通知事項一</p>
+	<p>通知事項二</p>
+	<p>通知事項三</p>
+</div>
+{% endblock %}
+{% block Main %}
+<div class="ui secondary pointing menu">
+	<a class="active item">
+		1F
+	</a>
+	<a class="item">
+		2F
+	</a>
+	<a class="item">
+		3F
+	</a>
+	<div class="right menu">
+		<a class="ui item">
+			其他（？
+		</a>
+	</div>
+</div>
+<div class="ui segment">
+	<p>
+		<img src="/static/flats/1f.png" class="ui fluid image" >
+	</p>
+</div>
+
+{% endblock %}

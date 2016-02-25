@@ -1,0 +1,26 @@
+{% extends "base.html" %} 
+
+{% block mainBlock %}
+	<div class="ui inverted menu" id="navibar">
+		<div class="ui container">
+			<a href="#" class="header item">
+				<!--img class="logo" src=""-->
+				Watch for You 管理界面
+			</a>
+			<a class="item" href="#">門禁設定</a>
+			<a class="item" href="#">闖入警報</a>
+			<a class="item" href="#">系統設定</a>
+			<a class="item" href="#">？？？？</a>
+			<a class="right floated item">管理員：{% block Name %}{% endblock %}</a>
+			<a class="item" href="#">登出</a>
+		</div>
+	</div>
+	<div class="ui container grid" id="MainFrame">
+		<div class="three wide column" id="MainSideBar">
+			{% block sideFrame %}{% endblock %}
+		</div>
+		<div class="thirteen wide column" id="MainFrame">
+			{% block mainFrame %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}
