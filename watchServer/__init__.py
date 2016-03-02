@@ -3,6 +3,11 @@
 # some debug code of server like update/restart code
 
 from flask import Flask
-app = Flask(__name__)
+from watchServer.front import front
+from watchServer.apis import apis
 
-import watchServer.index
+site = Flask(__name__)
+
+#import watchServer.index
+site.register_blueprint(front)
+site.register_blueprint(apis,url_prefix='/api')

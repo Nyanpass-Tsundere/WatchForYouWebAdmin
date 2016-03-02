@@ -6,7 +6,6 @@ import sys
 import os
 import socket
 import subprocess
-from database import InitDB
 
 # check version_info of python 
 def checkenvir():

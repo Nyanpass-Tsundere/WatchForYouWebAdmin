@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # 0muMDAU Server
-from watchServer import app 
+from watchServer import site
 import logging, setting
-from watchServer.index import index
 from werkzeug.contrib.fixers import ProxyFix 
 
 # muMDAU_app setting 
-app.secret_key = setting.yourkey
-app.wsgi_app = ProxyFix(app.wsgi_app)
+site.secret_key = setting.yourkey
+site.wsgi_app = ProxyFix(site.wsgi_app)
 
 # Main function of MDAUServer
 if __name__ == '__main__':
@@ -21,4 +20,4 @@ if __name__ == '__main__':
     else:
         debugB = True
         print('Debug Mode is run!')
-    app.run(host=str(setting.host), port=setting.port, debug=debugB)
+    site.run(host=str(setting.host), port=setting.port, debug=debugB)
