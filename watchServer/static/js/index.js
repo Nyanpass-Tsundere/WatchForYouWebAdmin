@@ -5,6 +5,7 @@ var cur_watch = 0;
 var areas;
 var cur_area = 0;
 var imgLocs;
+var mapPosSize = {height: 0, width: 0};
 
 $( '#floorMap' ).ready(function() {
 	//setTimeout(5000);
@@ -15,6 +16,7 @@ $( '#floorMap' ).ready(function() {
 $( document ).ready(function() {
 	getWatchs();
 	getAreas();
+	getMapPosSize();
 });
 
 $( window ).resize(function() {
@@ -92,4 +94,20 @@ function getImageInfo() {
 	pos.height = $( "#floorMap" ).height();
 	pos.width = $( "#floorMap" ).width();
 	imgLocs = pos;
+}
+
+function movePos(x,y) {
+	$("#map_position").css({"top": x+"px" , "left": y+"px"});
+}
+
+function movePosPrec(x,y) {
+	movePos(
+			imgLocs.top + imgLocs.height * x - mapPosSize.height / 2,
+			imgLocs.left + imgLocs.width * y - mapPosSize.width / 2
+			);
+}
+
+function getMapPosSize() {
+	mapPosSize.height=$("#map_position").height();
+	mapPosSize.width=$("#map_position").width();
 }
