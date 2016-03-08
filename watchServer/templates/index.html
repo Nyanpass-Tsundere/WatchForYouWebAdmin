@@ -27,23 +27,15 @@
 {% endblock %}
 {% block Main %}
 <div class="ui secondary pointing menu" id="floorList">
-	<!--a class="active item">
-		1F
-	</a>
-	<a class="item">
-		2F
-	</a>
-	<a class="item">
-		3F
-	</a>
-	<div class="right menu">
+	<!--div class="right menu">
 		<a class="ui item">
 			其他（？
 		</a>
 	</div-->
 </div>
 <div class="ui" id="map">
-	<img src="/static/flats/1f.png" class="ui fluid image" id="floorMap" onload="getImageInfo()">
+	<!--如果需要讓地圖填滿寬度，加入fluid到class中-->
+	<img src="/static/maps/loading.png" class="ui centered image" id="floorMap" onload="getImageInfo();">
 	<div id="map_position"></div>
 </div>
 

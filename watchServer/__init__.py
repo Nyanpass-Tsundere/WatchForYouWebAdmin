@@ -4,10 +4,11 @@
 
 from flask import Flask
 from watchServer.front import front
-from watchServer.apis import apis
+from watchServer.webAPI import webAPI
+from watchServer.watchAPI import watchAPI
 
 site = Flask(__name__)
 
 #import watchServer.index
 site.register_blueprint(front)
-site.register_blueprint(apis,url_prefix='/api_web')
+site.register_blueprint(webAPI,url_prefix='/api_web')

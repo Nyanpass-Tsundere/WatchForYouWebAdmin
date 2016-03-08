@@ -1,28 +1,26 @@
+// Init vars
 var api_url="api_web/"
-
 var watchs;
 var cur_watch = 0;
 var areas;
 var cur_area = 0;
 var imgLocs;
-var mapPosSize = {height: 0, width: 0};
+var mapDotSize = {height: 0, width: 0};
 
-$( '#floorMap' ).ready(function() {
-	//setTimeout(5000);
-	//getImageInfo();
-	//alert("fuck World");
-});  
-
+//Webpage Init
 $( document ).ready(function() {
 	getWatchs();
-	getAreas();
-	getMapPosSize();
+	getAreas().done(function () {
+		setArea(0);
+	});
+	getDotSize();
 });
 
 $( window ).resize(function() {
 	getImageInfo();
 });
 
+//function-about-watchs
 function getWatchs() {
 	$.getJSON( api_url+"watchs", function( data ) {
 		watchs = data;
@@ -33,11 +31,12 @@ function getWatchs() {
 				"class": "item"+first,
 				"id": "watch-"+key,
 				"href": "javascript: setWatch("+key+");",
-				html: val
+				html: val.name
 			}).appendTo( "#watchList" );
 			first = "";
 		});
 	});
+	return $.Deferred().resolve();
 }
 
 function setWatch(watchID) {
@@ -48,38 +47,24 @@ function setWatch(watchID) {
 	cur_watch = watchID;
 }
 
-//好不容易成功可是覺得很髒的語法
-function getWatchs_fullDiv() {
-	$.getJSON( api_url+"watchs", function( data ) {
-		var items = [];
-		$.each( data, function( key, val ) {
-			items.push( "<a id='watch" + key + "' class='item'>" + val + "</a>" );
-		});
-	
-	$( "<div/>", {
-		"id": "watchList",
-		"class": "ui vertical pointing menu",
-		html: items.join( "" )
-		}).appendTo( "#sidebar" );
-	});
-}
-
+//function-about-areas
 function getAreas() {
+	var r = $.Deferred();
 	$.getJSON( api_url+"areas", function( data ) {
 		areas = data;
 		var items = [];
-		var first = " active";
 		$.each( data, function( key, val ) {
 			$( "<a/>", {
-				"class": "item"+first,
+				"class": "item",
 				"id": "area-"+key,
 				"href": "javascript: setArea("+key+");",
-				html: val
+				html: val.name
 			}).appendTo( "#floorList" );
-			first = "";
+			r.resolve();
 		});
 	});
-}
+	return r;
+};
 
 function setArea(areaID) {
 	if ( cur_area >= 0 ) {
@@ -87,6 +72,7 @@ function setArea(areaID) {
 	}
 	$("#area-"+areaID).addClass("active");
 	cur_area = areaID;
+	$("#floorMap").attr("src",areas[cur_area].map)
 }
 
 function getImageInfo() {
@@ -96,18 +82,19 @@ function getImageInfo() {
 	imgLocs = pos;
 }
 
+// functions for the moving DOT
+function getDotSize() {
+	mapDotSize.height=$("#map_position").height();
+	mapDotSize.width=$("#map_position").width();
+}
+
 function movePos(x,y) {
 	$("#map_position").css({"top": x+"px" , "left": y+"px"});
 }
 
 function movePosPrec(x,y) {
 	movePos(
-			imgLocs.top + imgLocs.height * x - mapPosSize.height / 2,
-			imgLocs.left + imgLocs.width * y - mapPosSize.width / 2
+			imgLocs.top + imgLocs.height * x - mapDotSize.height / 2,
+			imgLocs.left + imgLocs.width * y - mapDotSize.width / 2
 			);
-}
-
-function getMapPosSize() {
-	mapPosSize.height=$("#map_position").height();
-	mapPosSize.width=$("#map_position").width();
 }
