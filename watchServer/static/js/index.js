@@ -9,7 +9,9 @@ var mapDotSize = {height: 0, width: 0};
 
 //Webpage Init
 $( document ).ready(function() {
-	getWatchs();
+	getWatchs().done(function() {
+		setWatch(0);
+	});
 	getAreas().done(function () {
 		setArea(0);
 	});
@@ -22,21 +24,20 @@ $( window ).resize(function() {
 
 //function-about-watchs
 function getWatchs() {
+	var r = $.Deferred();
 	$.getJSON( api_url+"watchs", function( data ) {
 		watchs = data;
-		var items = [];
-		var first = " active";
 		$.each( data, function( key, val ) {
 			$( "<a/>", {
-				"class": "item"+first,
+				"class": "item",
 				"id": "watch-"+key,
 				"href": "javascript: setWatch("+key+");",
 				html: val.name
 			}).appendTo( "#watchList" );
-			first = "";
+			r.resolve();
 		});
 	});
-	return $.Deferred().resolve();
+	return r;
 }
 
 function setWatch(watchID) {
@@ -79,6 +80,7 @@ function getImageInfo() {
 	var pos = $("#floorMap").position();
 	pos.height = $( "#floorMap" ).height();
 	pos.width = $( "#floorMap" ).width();
+	pos.pedding =  parseInt($('#floorMap').css('margin-left'));
 	imgLocs = pos;
 }
 
@@ -95,6 +97,6 @@ function movePos(x,y) {
 function movePosPrec(x,y) {
 	movePos(
 			imgLocs.top + imgLocs.height * x - mapDotSize.height / 2,
-			imgLocs.left + imgLocs.width * y - mapDotSize.width / 2
+			imgLocs.left + imgLocs.pedding + imgLocs.width * y - mapDotSize.width / 2
 			);
 }
