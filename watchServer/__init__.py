@@ -12,3 +12,4 @@ site = Flask(__name__)
 #import watchServer.index
 site.register_blueprint(front)
 site.register_blueprint(webAPI,url_prefix='/api_web')
+site.register_blueprint(watchAPI,url_prefix='/api_watch')
