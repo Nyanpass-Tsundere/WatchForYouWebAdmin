@@ -18,22 +18,19 @@ def upload():
 
     try:
         watchID=request.form.get('ID')
-        watchScanned=request.form.get('status')
+        watchScanned=request.form.get('Beacons')
     except:
-        try:
-            watchID=request.args.get('ID')
-            watchScanned=request.args.get('status')
-        except:
-            return "輸入不完整！！miss some fieled"
+        return "輸入不完整！！miss some fieled"
     
     filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
 
     try:
         outputfile = open(savepath+filename,"w")
         outputfile.write("get data: \n")
-        outputfile.write(str(watchID) + "\n")
-        outputfile.write(str(watchScanned) + "\n")
-        return "sucessful save to " + savepath + filename;
+        outputfile.write("ID=" + str(watchID) + "\n")
+        outputfile.write("BCs=" + str(watchScanned) + "\n")
+        outputfile.close()
+        return "sucessful save to " + savepath + filename + "ID=" + watchID ;
     except:
         return "writing failed";
 
