@@ -28,14 +28,13 @@ def upload():
     
     filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
 
-    #try:
-    if ( "A" == "A" ):
+    try:
         outputfile = open(savepath+filename,"w")
         outputfile.write("get data: \n")
         outputfile.write(str(watchID) + "\n")
         outputfile.write(str(watchScanned) + "\n")
         return "sucessful save to " + savepath + filename;
-    #except:
-    #    return "writing failed";
+    except:
+        return "writing failed";
 
         
