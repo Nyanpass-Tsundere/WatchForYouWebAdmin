@@ -16,6 +16,5 @@ debug = 0
 # Server Log Dump Location
 s_log = '../server.log'
 
-# Database Setting
-sqliteFile = '../sqlite/0MuMDAU.db'
-
+# Watch logs Location
+w_log = '../watchs/'
