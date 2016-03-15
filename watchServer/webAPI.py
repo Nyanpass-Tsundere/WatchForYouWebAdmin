@@ -35,3 +35,9 @@ def getActWatchs():
 @webAPI.route('/watch/Act/<ID>')
 def ctWatch(ID):
     return json.dumps(watchSession.new(ID,"2016-06-06"))
+
+@webAPI.route('/watch/loc/<ID>')
+@webAPI.route('/watch/loc/<ID>/<NUMBER>')
+
+def locs(ID,NUMBER=1):
+    return json.dumps(watchManager.getPos(ID,NUMBER))

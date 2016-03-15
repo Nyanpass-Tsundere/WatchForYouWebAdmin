@@ -35,21 +35,36 @@ def upload():
     
     session = watch.fetch(watchID)
     if session[0] == 0:
-        filename = 'notInSession'
+        filename = watch.noSessionFile
     else :
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
     
     return json.dumps(watch.sent(watchID,filename,'not avaliable',watchScanned))
     
-    """
+@watchAPI.route('/upload_xy',methods=['POST'])
+def upload_xy():
+    watchID=""
+    watchScanned=""
+    watchX=''
+    watchY=''
+
     try:
-        outputfile = open(savepath+filename,"w")
-        outputfile.write("get data: \n")
-        outputfile.write("ID=" + str(watchID) + "\n")
-        outputfile.write("BCs=" + str(watchScanned) + "\n")
-        outputfile.close()
-        return "sucessful save to " + savepath + filename + "ID=" + watchID ;
+        watchID=request.form.get('ID')
+        watchScanned=request.form.get('Beacons')
+        watchX=request.form.get('X')
+        watchY=request.form.get('Y')
+
+
     except:
-        return "writing failed";
-    """ 
+        return "輸入不完整！！miss some fieled"
+    
+    session = watch.fetch(watchID)
+    if session[0] == 0:
+        filename = watch.noSessionFile
+    else :
+        filename = session[2]
+    ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
+    
+    return json.dumps(watch.sent(watchID,filename,[watchX,watchY],watchScanned))
+    
