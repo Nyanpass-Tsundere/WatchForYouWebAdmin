@@ -75,6 +75,7 @@ class watchSession:
             sFile.close
 
 class watch:
+    noSessionFile = 'notInSession'
     def sent(watchID,watchSessionkey,watchLoc,watchBS):
             logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS]
 
@@ -117,13 +118,36 @@ class watch:
             return [-1,Name,"register failed"]
 
 class watchManager:
-
     from setting import t_format as timeFormat
     logEXT = ".log"
 
     def getName(watchID):
         wFile = open( path.join(wDir,watchID,watchNameFile), 'r' )
         return wFile.readline()
+
+    def getPos(watchID,line = 1):
+        import subprocess 
+        from io import BytesIO
+        session = watch.fetch(watchID)
+        if session[0] == 0:
+            filename = watch.noSessionFile
+        else :
+            filename = session[2]
+
+        logFile = path.join(wDir,watchID,filename+watchManager.logEXT)
+        
+        ## for python 3.5
+        #process = subprocess.run(['tail',logFile,'-n '+str(int(line))],stdout=subprocess.PIPE)
+        #buf = BytesIO(process.stdout)
+
+        ## for python 3.2
+        buf = BytesIO( subprocess.check_output(['tail',logFile,'-n '+str(int(line))]) )
+        data = []
+        for line in buf.readlines():
+            data.append(json.loads(line.decode()))
+
+        return data
+
 
     def listDir(tDir):
         return [ name for name in listdir(tDir) if path.isdir(path.join(tDir, name)) ]
