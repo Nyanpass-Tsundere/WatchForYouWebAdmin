@@ -76,17 +76,17 @@ class watchSession:
 
 class watch:
     def sent(watchID,watchSessionkey,watchLoc,watchBS):
-        logdata = [strftime(watchManager.timeFormat),watchLoc,watchBS]
+            logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS]
 
-        logFile = open( path.join(wDir,watchID,watchSessionkey+watchManager.logEXT) ,'a')
-        logFile.writelines(json.dumps(logdata)+"\n")
-        logFile.close()
+            logFile = open( path.join(wDir,watchID,watchSessionkey+watchManager.logEXT) ,'a')
+            logFile.writelines(json.dumps(logdata)+"\n")
+            logFile.close()
 
-        watchSession.clean()
-        if watchSession.check(watchID,watchSessionkey):
-            return True
-        else:
-            return False
+            watchSession.clean()
+            if watchSession.check(watchID,watchSessionkey):
+                return [1,"update Sucessful"]
+            else:
+                return [0,"Updated, but Session already End"]
 
     def fetch(watchID):
         if not watchSession.chkWatchDir(watchID):

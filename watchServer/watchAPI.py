@@ -33,8 +33,16 @@ def upload():
     except:
         return "輸入不完整！！miss some fieled"
     
-    filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
-
+    session = watch.fetch(watchID)
+    if session[0] == 0:
+        filename = 'notInSession'
+    else :
+        filename = session[2]
+    ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
+    
+    return json.dumps(watch.sent(watchID,filename,'not avaliable',watchScanned))
+    
+    """
     try:
         outputfile = open(savepath+filename,"w")
         outputfile.write("get data: \n")
@@ -44,5 +52,4 @@ def upload():
         return "sucessful save to " + savepath + filename + "ID=" + watchID ;
     except:
         return "writing failed";
-
-        
+    """ 
