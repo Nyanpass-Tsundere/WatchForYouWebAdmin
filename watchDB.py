@@ -1,13 +1,16 @@
 from setting import w_log as wDir
 import json
-from os import path , mkdir
+from os import path, mkdir, listdir
 from time import strftime 
+
+watchNameFile = 'name.txt'
 
 class watchSession:
     filename = 'sessions.txt'
     from setting import t_format as timeFormat
-
-    def new(watchID,expireTime,permission = None ):
+    
+    
+    def chkWatchDir(watchID):
         ## init dir
         if not path.isdir(wDir):
             mkdir(wDir)
@@ -15,8 +18,18 @@ class watchSession:
         ## init watch's dir
         watchDir = path.join(wDir,watchID)
         if not path.isdir(watchDir):
-            mkdir(watchDir)
-        
+            return False
+        else:
+            return True
+
+    def new(watchID,expireTime,permission = None ):
+        ## init watch dir if not exist
+        ## just convient for debug
+        watchSession.chkWatchDir(watchID)
+
+        ## clean exist session
+        watchSession.clean(watchID)
+
         ## Generator Session
         sKey = strftime(watchSession.timeFormat)
         sData = [watchID,sKey,expireTime,permission]
@@ -27,18 +40,6 @@ class watchSession:
 
         return sKey
     
-    def fetch(watchID):
-        sFile = open(path.join(wDir,watchSession.filename) , 'r' )
-
-        for line in sFile:
-            content = json.loads(line)
-            if content[0] == watchID:
-                sFile.close()
-                return content[1]
-            
-        sFile.close()
-        return False
-
     def check(watchID,Key):
         sFile = open(path.join(wDir,watchSession.filename) , 'r' )
         
@@ -51,25 +52,29 @@ class watchSession:
         sFile.close()
         return False
 
-    def clean():
-        sFile = open(path.join(wDir,watchSession.filename), 'r')
-        data = sFile.readlines()
-        sFile.close
+    def clean(watchID = None):
+        try:
+            sFile = open(path.join(wDir,watchSession.filename), 'r')
+            data = sFile.readlines()
+            sFile.close
 
-        sFile = open(path.join(wDir,watchSession.filename), 'w')
+            sFile = open(path.join(wDir,watchSession.filename), 'w')
         
-        for dataLine in data:
-            if not strftime(watchSession.timeFormat) > json.loads(dataLine)[2] :
-                sFile.write(dataLine)
+            for dataLine in data:
+                if not strftime(watchSession.timeFormat) > json.loads(dataLine)[2] :
+                    if watchID == None:
+                        sFile.write(dataLine)
+                    else:
+                        if not watchID == json.loads(dataLine)[0]:
+                            sFile.write(dataLine)
 
-        sFile.close
-        return True
+            sFile.close
+            return True
+        except:
+            sFile = open(path.join(wDir,watchSession.filename), 'w')
+            sFile.close
 
-class watchManager:
-
-    from setting import t_format as timeFormat
-    logEXT = ".log"
-    
+class watch:
     def sent(watchID,watchSessionkey,watchLoc,watchBS):
         logdata = [strftime(watchManager.timeFormat),watchLoc,watchBS]
 
@@ -83,3 +88,57 @@ class watchManager:
         else:
             return False
 
+    def fetch(watchID):
+        if not watchSession.chkWatchDir(watchID):
+            return [-1,"not register"]
+        sFile = open(path.join(wDir,watchSession.filename) , 'r' )
+
+        name = watchManager.getName(watchID)
+
+        for line in sFile:
+            content = json.loads(line)
+            if content[0] == watchID:
+                sFile.close()
+                return [1,name,content[1]]
+            
+        sFile.close()
+        return [0,name,"nothing to fetch"]
+
+    def register(watchID,Name):
+        watchDir = path.join(wDir,watchID)
+        try :
+            mkdir( watchDir )
+
+            wFile = open( path.join(watchDir,watchNameFile), 'w' )
+            wFile.writelines(Name)
+            wFile.close
+            return [0,Name,"register sucesfull"]
+        except:
+            return [-1,Name,"register failed"]
+
+class watchManager:
+
+    from setting import t_format as timeFormat
+    logEXT = ".log"
+
+    def getName(watchID):
+        wFile = open( path.join(wDir,watchID,watchNameFile), 'r' )
+        return wFile.readline()
+
+    def listDir(tDir):
+        return [ name for name in listdir(tDir) if path.isdir(path.join(tDir, name)) ]
+
+    def watchs():
+        return watchManager.listDir(wDir)
+
+    def actWatchs():
+        sFile = open( path.join(wDir,watchSession.filename) , 'r')
+        sessions = []
+        for line in sFile.readlines():
+            sessions.append(json.loads(line))
+        
+        watchs = []
+        for session in sessions:
+            watchs.append(session[0])
+        
+        return watchs

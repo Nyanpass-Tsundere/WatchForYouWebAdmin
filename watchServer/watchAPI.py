@@ -1,6 +1,8 @@
 from flask import Blueprint, abort, request
+from watchDB import watchSession, watch
 
-import time
+import time, json
+from random import randrange 
 
 watchAPI = Blueprint('watchAPI', __name__,
                         template_folder='templates')
@@ -11,7 +13,16 @@ savepath="../uploads/"
 def show():
     return 'hello world'
 
-@watchAPI.route('/upload',methods=['GET','POST'])
+@watchAPI.route('/fetch/<ID>')
+def fetchID(ID):
+    return json.dumps(watch.fetch(ID));
+
+@watchAPI.route('/reg/<ID>')
+def regWatch(ID):
+    name = "手錶" + str(randrange(1,99))
+    return json.dumps(watch.register(ID,name))
+
+@watchAPI.route('/upload',methods=['POST'])
 def upload():
     watchID=""
     watchScanned=""
