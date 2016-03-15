@@ -25,7 +25,7 @@ $( window ).resize(function() {
 //function-about-watchs
 function getWatchs() {
 	var r = $.Deferred();
-	$.getJSON( api_url+"watchs", function( data ) {
+	$.getJSON( api_url+"watch/listAct", function( data ) {
 		watchs = data;
 		$.each( data, function( key, val ) {
 			$( "<a/>", {
