@@ -7,7 +7,7 @@ webAPI = Blueprint('webAPI', __name__,
 
 @webAPI.route('/')
 def show():
-    return 'hello world'
+    return 'web API here'
 
 @webAPI.route('/areas')
 def getAreas():
@@ -24,7 +24,7 @@ def getWatchs1():
         fullData.append( {'name': name, 'ID': watch} )
     return json.dumps(fullData)
 
-@webAPI.route('/watch/listAct')
+@webAPI.route('/watch/list/act')
 def getActWatchs():
     fullData = []
     for watch in watchManager.actWatchs():

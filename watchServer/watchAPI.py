@@ -56,7 +56,7 @@ def upload():
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
     
-    return json.dumps(watch.sent(watchID,filename,'not avaliable',json.dumps(fullBeacons)))
+    return json.dumps(watch.sent(watchID,filename,[0.5,0.5],json.dumps(fullBeacons)))
     
 @watchAPI.route('/upload_xy',methods=['POST'])
 def upload_xy():

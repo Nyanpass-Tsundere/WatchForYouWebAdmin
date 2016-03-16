@@ -38,7 +38,7 @@ class watchSession:
         sFile.writelines(json.dumps(sData)+ "\n")
         sFile.close()
 
-        return sKey
+        return [0,sKey,'sucessful generate session key']
     
     def check(watchID,Key):
         sFile = open(path.join(wDir,watchSession.filename) , 'r' )
@@ -152,7 +152,8 @@ class watchManager:
         buf = BytesIO( subprocess.check_output(['tail',logFile,'-n '+str(int(line))]) )
         data = []
         for line in buf.readlines():
-            data.append(json.loads(line.decode()))
+            loadline = json.loads(line.decode())
+            data.append(  [loadline[0],loadline[1]] )
 
         return data
 
