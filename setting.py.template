@@ -21,3 +21,6 @@ w_log = '../watchs/'
 
 # Timeformat 
 t_format = '%Y-%m-%d_%H%M'
+
+# Key
+yourkey = ''
