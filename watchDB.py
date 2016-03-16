@@ -62,17 +62,16 @@ class watchSession:
         
             for dataLine in data:
                 if not strftime(watchSession.timeFormat) > json.loads(dataLine)[2] :
-                    if watchID == None:
+                    if watchID is None:
                         sFile.write(dataLine)
                     else:
                         if not watchID == json.loads(dataLine)[0]:
                             sFile.write(dataLine)
-
-            sFile.close
+            sFile.close()
             return True
         except:
             sFile = open(path.join(wDir,watchSession.filename), 'w')
-            sFile.close
+            sFile.close()
 
 class watch:
     noSessionFile = 'notInSession'
@@ -96,7 +95,7 @@ class watch:
 
     def fetch(watchID):
         if not watchSession.chkWatchDir(watchID):
-            return [-1,"noname","not register"]
+            return [-1,"noname",'',"not register"]
         try:
             sFile = open(path.join(wDir,watchSession.filename) , 'r' )
         except:
@@ -108,10 +107,10 @@ class watch:
             content = json.loads(line)
             if content[0] == watchID:
                 sFile.close()
-                return [1,name,"a session to fetch",content[1]]
+                return [1,name,content[1],"a session to fetch"]
             
         sFile.close()
-        return [0,name,"nothing to fetch"]
+        return [0,name,'',"nothing to fetch"]
 
     def register(watchID,Name):
         watchDir = path.join(wDir,watchID)
@@ -120,7 +119,7 @@ class watch:
 
             wFile = open( path.join(watchDir,watchNameFile), 'w' )
             wFile.writelines(Name)
-            wFile.close
+            wFile.close()
             return [0,Name,"register sucesfull"]
         except:
             return [-1,Name,"register failed"]
@@ -131,7 +130,7 @@ class watchManager:
 
     def getName(watchID):
         wFile = open( path.join(wDir,watchID,watchNameFile), 'r' )
-        return wFile.readline()
+        return wFile.readline().split("\r")[0]
 
     def getPos(watchID,line = 1):
         import subprocess 
