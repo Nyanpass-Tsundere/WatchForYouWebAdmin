@@ -91,8 +91,11 @@ class watch:
 
     def fetch(watchID):
         if not watchSession.chkWatchDir(watchID):
-            return [-1,"not register"]
-        sFile = open(path.join(wDir,watchSession.filename) , 'r' )
+            return [-1,"noname","not register"]
+        try:
+            sFile = open(path.join(wDir,watchSession.filename) , 'r' )
+        except:
+            sFile = open(path.join(wDir,watchSession.filename) , 'a' )
 
         name = watchManager.getName(watchID)
 
@@ -100,7 +103,7 @@ class watch:
             content = json.loads(line)
             if content[0] == watchID:
                 sFile.close()
-                return [1,name,content[1]]
+                return [1,name,"a session to fetch",content[1]]
             
         sFile.close()
         return [0,name,"nothing to fetch"]

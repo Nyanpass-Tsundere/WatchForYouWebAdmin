@@ -11,7 +11,7 @@ savepath="../uploads/"
 
 @watchAPI.route('/')
 def show():
-    return 'hello world'
+    return 'Watch Relate API Here'
 
 @watchAPI.route('/fetch/<ID>')
 def fetchID(ID):
