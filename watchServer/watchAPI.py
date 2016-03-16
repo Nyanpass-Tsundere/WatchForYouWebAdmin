@@ -28,13 +28,27 @@ def upload():
     watchScanned=""
 
     watchID=request.form.get('ID')
-    watchScanned=request.form.get('Beacons')
+    beacons=request.form.get('Beacons')
+
+    try:
+        fullBeacons = []
+        for beacon in beacons.replace('[','').replace(']','').replace('},{','}},{{').split('},{'):
+            info = beacon.replace('{','').replace('}','').split(',')
+            formatedInfo = {'macAddress' : info[0].replace('macAddress:','') ,
+                    info[1].split(':')[0] : info[1].split(':')[1], 
+                    info[2].split(':')[0] : int(info[2].split(':')[1]), 
+                    info[3].split(':')[0] : int(info[3].split(':')[1]), 
+                    info[4].split(':')[0] : int(info[4].split(':')[1]),
+                    info[5].split(':')[0] : int(info[5].split(':')[1])
+                    }
+            fullBeacons.append(formatedInfo)
+    except:
+        return json.dumps([-3,"beacon info type wrong"])
     
     try:
         session = watch.fetch(watchID)
     except:
         return json.dumps([-1,"no watchID Input!!"])
-
 
     if session[0] == 0:
         filename = watch.noSessionFile
@@ -42,7 +56,7 @@ def upload():
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
     
-    return json.dumps(watch.sent(watchID,filename,'not avaliable',watchScanned))
+    return json.dumps(watch.sent(watchID,filename,'not avaliable',json.dumps(fullBeacons)))
     
 @watchAPI.route('/upload_xy',methods=['POST'])
 def upload_xy():
@@ -51,17 +65,16 @@ def upload_xy():
     watchX=''
     watchY=''
 
-    try:
-        watchID=request.form.get('ID')
-        watchScanned=request.form.get('Beacons')
-        watchX=request.form.get('X')
-        watchY=request.form.get('Y')
-
-
-    except:
-        return "輸入不完整！！miss some fieled"
+    watchID=request.form.get('ID')
+    watchScanned=request.form.get('Beacons')
+    watchX=request.form.get('X')
+    watchY=request.form.get('Y')
     
-    session = watch.fetch(watchID)
+    try:
+        session = watch.fetch(watchID)
+    except:
+        return json.dumps([-1,"no watchID Input!!"])
+
     if session[0] == 0:
         filename = watch.noSessionFile
     else :
