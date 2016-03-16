@@ -27,13 +27,15 @@ def upload():
     watchID=""
     watchScanned=""
 
-    try:
-        watchID=request.form.get('ID')
-        watchScanned=request.form.get('Beacons')
-    except:
-        return "輸入不完整！！miss some fieled"
+    watchID=request.form.get('ID')
+    watchScanned=request.form.get('Beacons')
     
-    session = watch.fetch(watchID)
+    try:
+        session = watch.fetch(watchID)
+    except:
+        return json.dumps([-1,"no watchID Input!!"])
+
+
     if session[0] == 0:
         filename = watch.noSessionFile
     else :

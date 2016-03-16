@@ -78,6 +78,11 @@ class watch:
     noSessionFile = 'notInSession'
     def sent(watchID,watchSessionkey,watchLoc,watchBS):
             logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS]
+            
+            try:
+                watchManager.getName(watchID)
+            except:
+                return [-2,"Watch not register"]
 
             logFile = open( path.join(wDir,watchID,watchSessionkey+watchManager.logEXT) ,'a')
             logFile.writelines(json.dumps(logdata)+"\n")
