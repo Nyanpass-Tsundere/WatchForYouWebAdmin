@@ -142,6 +142,9 @@ class watchManager:
             filename = session[2]
 
         logFile = path.join(wDir,watchID,filename+watchManager.logEXT)
+
+        lFile = open(logFile,'a')
+        lFile.close()
         
         ## for python 3.5
         #process = subprocess.run(['tail',logFile,'-n '+str(int(line))],stdout=subprocess.PIPE)
