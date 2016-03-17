@@ -43,9 +43,11 @@ function getWatchs() {
 function setWatch(watchID) {
 	if ( cur_watch >= 0 ) {
 		$("#watch-"+cur_watch).removeClass("active");
+		stopMoving()
 	}
 	$("#watch-"+watchID).addClass("active");
 	cur_watch = watchID;
+	startMoving(watchs[watchID]['ID'])
 }
 
 //function-about-areas
@@ -99,4 +101,19 @@ function movePosPrec(x,y) {
 			imgLocs.top + imgLocs.height * x - mapDotSize.height / 2,
 			imgLocs.left + imgLocs.pedding + imgLocs.width * y - mapDotSize.width / 2
 			);
+}
+
+function startMoving(watchID) {
+	refreshcon = setInterval(function() {
+			$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
+				movePosPrec(data[0][1][0],data[0][1][1])
+			})
+		//$('#postcontainer').load('new/posts.php', function(){  });
+	}, 3000);
+}
+
+function stopMoving() {
+	try{
+		clearInterval(refreshcon);
+	}catch(err){}
 }
