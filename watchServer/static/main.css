@@ -49,3 +49,9 @@
 	height: 20px;
 	border-radius: 20px;
 }
+
+
+/**   美化UI   **/
+body {
+	background-color: #e6e6e6;
+}
