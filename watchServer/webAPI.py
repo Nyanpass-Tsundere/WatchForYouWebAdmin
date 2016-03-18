@@ -11,9 +11,12 @@ def show():
 
 @webAPI.route('/areas')
 def getAreas():
-    areas = [{'name': '1F', 'ID': '0001', 'map': '/static/maps/1f.png'},
-            {'name': 'LAB', 'ID': '0002', 'map': '/static/maps/LAB.png'},
-            {'name': '3F', 'ID': '0003'}]
+    areas = [
+            {'name': '2F', 'ID': '0001', 'map': '/static/maps/2.png'},
+            {'name': '3F', 'ID': '0002', 'map': '/static/maps/3.png'},
+            {'name': '4F', 'ID': '0003', 'map': '/static/maps/4.png'},
+            {'name': 'LAB', 'ID': '0004', 'map': '/static/maps/LAB.png'}
+            ]
     return json.dumps(areas)
 
 @webAPI.route('/watch/list')
