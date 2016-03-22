@@ -13,14 +13,23 @@ port = 8509
 # Debug Mode , 0 = off , 1 = on
 debug = 0
 
+# Key
+yourkey = ''
+
+# database location
+db_loc = '../watchForYouWebDB/'
+
 # Server Log Dump Location
-s_log = '../server.log'
+s_log = db_loc+'server.log'
 
 # Watch logs Location
-w_log = '../watchs/'
+w_log = db_loc+'watchs/'
+
+# zone file setting
+z_loc = db_loc+'zones/'
+
+# alert logs Filename
+alert_log = db_loc+'alert.log'
 
 # Timeformat 
 t_format = '%Y-%m-%d_%H%M'
-
-# Key
-yourkey = ''
