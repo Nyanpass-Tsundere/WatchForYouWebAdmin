@@ -26,7 +26,7 @@ s_log = db_loc+'server.log'
 w_log = db_loc+'watchs/'
 
 # zone file setting
-z_loc = db_loc+'zones/'
+z_loc = db_loc+'zone.db'
 
 # alert logs Filename
 alert_log = db_loc+'alert.log'

@@ -1,4 +1,4 @@
-from setting import w_log as wDir, areas
+from setting import w_log as wDir, z_loc as zDB, areas
 import json
 from os import path, mkdir, listdir
 from time import strftime 
@@ -178,13 +178,34 @@ class watchManager:
         
         return watchs
 
-class areas:
+class zone:
     import sqlite3
-    def createZoneTable(zoneID):
+    def checkZoneTable(MapID):
+        MapID = int(MapID)
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('SELECT * FROM Map'+str(MapID))
+            except:
+                return False
+                
+            conn.close
         return True
 
-    def checkZoneTable(zoneID):
+    def createZoneTable(MapID):
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            #try:
+            if True:
+                cursor.execute('CREATE TABLE '+'Map'+str(MapID)+' (AreaID PRIMARY KEY, PosLT, PosRB, alwaysAlert)')
+            #except:
+            #    return False
+            conn.close
+
         return True
 
-    def listZone(zoneID):
+    def newZone(MapID,X,Y):
+        return True
+
+    def listZone(MapID):
         return True
