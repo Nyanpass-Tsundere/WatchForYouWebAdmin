@@ -202,20 +202,20 @@ class zone:
             cursor = conn.cursor()
             try:
                 cursor.execute('CREATE TABLE '+TableName+ \
-                        ' (Name UNIQUE, PosLT, PosRB, alwaysAlert Boolean, PRIMARY KEY (PosLT,PosRB))')
+                        ' (Name UNIQUE, closeBlock, PosDoor, PosLT, PosRB, alwaysAlert Boolean, PRIMARY KEY (PosLT,PosRB))')
             except:
                 return [-1,'create table failed']
             conn.close
 
         return [0,'create sucessful']
 
-    def newZone(MapID,name,X,Y,alwaysAlert=False):
+    def newZone(MapID,name,LT,RB,closeBlock=None,PosDoor=None,alwaysAlert=False):
         tableName = zone.genTableName(MapID)
-        value = [name,X,Y,alwaysAlert]
+        value = [name,closeBlock,PosDoor,LT,RB,alwaysAlert]
         with zone.sqlite3.connect(zDB) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute('INSERT INTO '+tableName+' (Name,PosLT,PosRB,closeBlock,alwaysAlert) VALUES (?,?,?,?);',value)
+                cursor.execute('INSERT INTO '+tableName+' (Name,closeBlock,PosDoor,PosLT,PosRB,alwaysAlert) VALUES (?,?,?,?,?,?);',value)
             except:
                 return [-1,'create zone record failed']
             conn.commit()
@@ -235,7 +235,7 @@ class zone:
         return [0,data]
             
 
-    def inZone(MapID,X,Y):
+    def inZone(MapID,X,Y,AlertArea=False):
         data = zone.listZone(MapID)
         if data[0] < 0:
             return [-2,'fetch zone failed']
@@ -244,12 +244,18 @@ class zone:
         includeZones = []
         counter = 0
         for zoneLine in data:
-            if eval(zoneLine[1])[0] < X and \
-            eval(zoneLine[2])[0] > X and \
-            eval(zoneLine[1])[1] < Y and \
-            eval(zoneLine[2])[1] > Y :
-                includeZones.append(zoneLine)
-                counter+=1
+            if eval(zoneLine[3])[0] <= X and \
+            eval(zoneLine[4])[0] >= X and \
+            eval(zoneLine[3])[1] <= Y and \
+            eval(zoneLine[4])[1] >= Y :
+                if AlertArea :
+                    if zoneLine[5]:
+                        includeZones.append(zoneLine)
+                        counter+=1
+
+                else:
+                    includeZones.append(zoneLine)
+                    counter+=1
 
         return [counter,includeZones]
 
