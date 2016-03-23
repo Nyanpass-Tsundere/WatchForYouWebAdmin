@@ -10,7 +10,7 @@ webAPI = Blueprint('webAPI', __name__,
 def show():
     return 'web API here'
 
-@webAPI.route('/areas')
+@webAPI.route('/maps')
 def getAreas():
     return json.dumps(areas)
 

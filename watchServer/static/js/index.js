@@ -2,8 +2,8 @@
 var api_url="api_web/"
 var watchs;
 var cur_watch = 0;
-var areas;
-var cur_area = 0;
+var maps;
+var cur_map = 0;
 var imgLocs;
 var mapDotSize = {height: 0, width: 0};
 
@@ -47,14 +47,14 @@ function setWatch(watchID) {
 	}
 	$("#watch-"+watchID).addClass("active");
 	cur_watch = watchID;
-	startMoving(watchs[watchID]['ID'])
+	startMoving(watchs[watchID]['ID'],1)
 }
 
-//function-about-areas
+//function-about-maps
 function getAreas() {
 	var r = $.Deferred();
-	$.getJSON( api_url+"areas", function( data ) {
-		areas = data;
+	$.getJSON( api_url+"maps", function( data ) {
+		maps = data;
 		var items = [];
 		$.each( data, function( key, val ) {
 			$( "<a/>", {
@@ -70,12 +70,12 @@ function getAreas() {
 };
 
 function setArea(areaID) {
-	if ( cur_area >= 0 ) {
-		$("#area-"+cur_area).removeClass("active");
+	if ( cur_map >= 0 ) {
+		$("#area-"+cur_map).removeClass("active");
 	}
 	$("#area-"+areaID).addClass("active");
-	cur_area = areaID;
-	$("#floorMap").attr("src",areas[cur_area].map)
+	cur_map = areaID;
+	$("#floorMap").attr("src",maps[cur_map].map)
 }
 
 function getImageInfo() {
@@ -103,10 +103,14 @@ function movePosPrec(x,y) {
 			);
 }
 
-function startMoving(watchID) {
+function startMoving(watchID,follow) {
 	refreshcon = setInterval(function() {
 			$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
+				if ( data[0][1][2] != cur_map && follow ) {
+					setArea(data[0][1][2])
+				}
 				movePosPrec(data[0][1][0],data[0][1][1])
+
 			})
 		//$('#postcontainer').load('new/posts.php', function(){  });
 	}, 3000);
