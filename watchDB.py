@@ -180,32 +180,76 @@ class watchManager:
 
 class zone:
     import sqlite3
+    table_prefix = 'Map'
+    def genTableName(MapID):
+        return zone.table_prefix + str(int(MapID))
+
     def checkZoneTable(MapID):
-        MapID = int(MapID)
+        TableName = zone.genTableName(MapID)
         with zone.sqlite3.connect(zDB) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute('SELECT * FROM Map'+str(MapID))
+                cursor.execute('SELECT * FROM '+TableName)
             except:
-                return False
+                return [-1,'table not exist']
                 
             conn.close
-        return True
+        return [0,'table exist']
 
     def createZoneTable(MapID):
+        TableName = zone.genTableName(MapID)
         with zone.sqlite3.connect(zDB) as conn:
             cursor = conn.cursor()
-            #try:
-            if True:
-                cursor.execute('CREATE TABLE '+'Map'+str(MapID)+' (AreaID PRIMARY KEY, PosLT, PosRB, alwaysAlert)')
-            #except:
-            #    return False
+            try:
+                cursor.execute('CREATE TABLE '+TableName+ \
+                        ' (Name UNIQUE, PosLT, PosRB, alwaysAlert Boolean, PRIMARY KEY (PosLT,PosRB))')
+            except:
+                return [-1,'create table failed']
             conn.close
 
-        return True
+        return [0,'create sucessful']
 
-    def newZone(MapID,X,Y):
-        return True
+    def newZone(MapID,name,X,Y,alwaysAlert=False):
+        tableName = zone.genTableName(MapID)
+        value = [name,X,Y,alwaysAlert]
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('INSERT INTO '+tableName+' (Name,PosLT,PosRB,alwaysAlert) VALUES (?,?,?,?);',value)
+            except:
+                return [-1,'create zone record failed']
+            conn.commit()
+            conn.close
+        return [0,'Create zone record sucessful']
 
     def listZone(MapID):
-        return True
+        TableName = zone.genTableName(MapID)
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('SELECT * FROM '+TableName)
+            except:
+                return [-1,'table not exist']
+            data = cursor.fetchall()
+            conn.close
+        return [0,data]
+            
+
+    def inZone(MapID,X,Y):
+        data = zone.listZone(MapID)
+        if data[0] < 0:
+            return [-2,'fetch zone failed']
+
+        data = data[1]
+        includeZones = []
+        counter = 0
+        for zoneLine in data:
+            if eval(zoneLine[1])[0] < X and \
+            eval(zoneLine[2])[0] > X and \
+            eval(zoneLine[1])[1] < Y and \
+            eval(zoneLine[2])[1] > Y :
+                includeZones.append(zoneLine)
+                counter+=1
+
+        return [counter,includeZones]
+
