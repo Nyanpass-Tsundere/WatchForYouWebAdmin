@@ -1,6 +1,7 @@
 from flask import Blueprint, abort, request
 from watchDB import watchSession, watch
 
+
 import time, json
 from random import randrange 
 
@@ -14,11 +15,21 @@ def show():
     return 'Watch Relate API Here'
 
 @watchAPI.route('/fetch/<ID>')
-def fetchID(ID):
+@watchAPI.route('/fetch',methods=['POST'])
+def fetchID(ID=None):
+    if request.method == 'POST':
+        ID=request.form.get('ID')
+    if ID == None:
+        return json.dumps([-2,'no ID'])
     return json.dumps(watch.fetch(ID));
 
 @watchAPI.route('/reg/<ID>')
-def regWatch(ID):
+@watchAPI.route('/reg',methods=['POST'])
+def regWatch(ID=None):
+    if request.method == 'POST':
+        ID=request.form.get('ID')
+    if ID == None:
+        return json.dumps([-2,'no ID'])
     name = "手錶" + str(randrange(1,99))
     return json.dumps(watch.register(ID,name))
 
@@ -56,19 +67,22 @@ def upload():
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
     
-    return json.dumps(watch.sent(watchID,filename,[0.5,0.5],json.dumps(fullBeacons)))
+    return json.dumps(watch.sent(watchID,filename,[0.5,0.5,1],json.dumps(fullBeacons)))
     
-@watchAPI.route('/upload_xy',methods=['POST'])
+@watchAPI.route('/upload_xyz',methods=['POST'])
 def upload_xy():
     watchID=""
     watchScanned=""
     watchX=''
     watchY=''
+    ## 雖然叫做Z軸，實際上是MapID
+    watchZ=''
 
     watchID=request.form.get('ID')
     watchScanned=request.form.get('Beacons')
     watchX=request.form.get('X')
     watchY=request.form.get('Y')
+    watchZ=request.form.get('Z')
     
     try:
         session = watch.fetch(watchID)
@@ -81,5 +95,5 @@ def upload_xy():
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
     
-    return json.dumps(watch.sent(watchID,filename,[watchX,watchY],watchScanned))
+    return json.dumps(watch.sent(watchID,filename,[watchX,watchY,watchZ],watchScanned))
     
