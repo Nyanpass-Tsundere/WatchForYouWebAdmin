@@ -215,7 +215,7 @@ class zone:
         with zone.sqlite3.connect(zDB) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute('INSERT INTO '+tableName+' (Name,PosLT,PosRB,alwaysAlert) VALUES (?,?,?,?);',value)
+                cursor.execute('INSERT INTO '+tableName+' (Name,PosLT,PosRB,closeBlock,alwaysAlert) VALUES (?,?,?,?);',value)
             except:
                 return [-1,'create zone record failed']
             conn.commit()
