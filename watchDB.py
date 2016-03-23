@@ -1,4 +1,4 @@
-from setting import w_log as wDir
+from setting import w_log as wDir, areas
 import json
 from os import path, mkdir, listdir
 from time import strftime 
@@ -177,3 +177,14 @@ class watchManager:
             watchs.append(session[0])
         
         return watchs
+
+class areas:
+    import sqlite3
+    def createZoneTable(zoneID):
+        return True
+
+    def checkZoneTable(zoneID):
+        return True
+
+    def listZone(zoneID):
+        return True
