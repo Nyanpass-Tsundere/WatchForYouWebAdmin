@@ -295,52 +295,38 @@ class block:
 
 class navi:
     from setting import blockMap
-    def toTarget(areaID,curBlock,tarBlock,count=None,route=None,UpstreamWay=None):
-        from time import sleep
-        print('your location is '+str(curBlock[0])+','+str(curBlock[1]))
-        if count == None:
-            count = 0
+    findRoutes = []
 
+    def go(areaID, start, end):
+        maze = navi.blockMap[areaID]
+        navi.visit(maze, start, end)
+    
+    def visit(maze, pt, end, route = None):
         if route == None:
             route = []
+
+        if navi.isVisitable(maze, pt, route):
+            route.append(pt)
+            if navi.isEnd(route, end):
+                navi.addRoute(route)
+            else:
+                navi.visit(maze, [pt[0], pt[1] + 1], end, route)
+                navi.visit(maze, [pt[0] + 1, pt[1]], end, route)
+                navi.visit(maze, [pt[0], pt[1] - 1], end, route)
+                navi.visit(maze, [pt[0] - 1, pt[1]], end, route)
+            route.pop()
+    
+    def isVisitable(maze, pt, route):
+        #print(pt)
+        #print(maze)
+        try:
+            return maze[pt[0]][pt[1]] == 1 and pt not in route
+        except:
+            return False
         
-        blockSize = block.getBlockRange(areaID)
-        if curBlock[0] > blockSize[0] or\
-            curBlock[1] > blockSize[1]:
-                print('out of range')
-                return [-1,'out of Range']
+    def isEnd(route, end):
+            return end in route
 
-        #sleep(1)
-
-        if curBlock[0] == tarBlock[0] and \
-            curBlock[1] == tarBlock[1]:
-                return [0,'arrived!!',route]
-
-
-        if count > ( ( blockSize[0] + blockSize[1] ) * 4 ):
-            print('too much step!!')
-            return [-2,'too much step']
-            
-        else:
-            route.append(curBlock)
-            count = count + 1
-            avalaiablePath = []
-            paths = []
-            if UpstreamWay != None:
-                paths.append(UpstreamWay)
-            paths.append[ [1,0],[0,1],[0,-1],[-1,0] ]
-            for path in paths:
-                runing = navi.toTarget(
-                        areaID,
-                        [curBlock[0]+path[0],
-                            curBlock[1]+path[1]],
-                        tarBlock,count,route,path)
-                if (runing[0] >= 0):
-                    avalaiablePath.append(runing[2])
-                    #break;
-                
-            print(str(avalaiablePath))
-            return runing
-
-    def fuckthisteacher():
-        return 'fucked'
+    def addRoute(route):
+        #print (route)
+        navi.findRoutes.append(eval(str(route)))
