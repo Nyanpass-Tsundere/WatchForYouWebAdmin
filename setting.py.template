@@ -36,8 +36,27 @@ t_format = '%Y-%m-%d_%H%M'
 
 # Areas
 areas = [
-        {'name': '2F', 'ID': '0001', 'map': '/static/maps/2.png'},
-        {'name': '3F', 'ID': '0002', 'map': '/static/maps/3.png'},
-        {'name': '4F', 'ID': '0003', 'map': '/static/maps/4.png'},
-        {'name': 'LAB', 'ID': '0004', 'map': '/static/maps/LAB.png'}
+        {'name': '2F', 'map': '/static/maps/2.png', 'size': [878,464], 'block': [5,5]},
+        {'name': '3F', 'map': '/static/maps/3.png'},
+        {'name': '4F', 'map': '/static/maps/4.png'},
+        {'name': 'LAB', 'map': '/static/maps/LAB.png'}
+        ]
+
+blockMap = [
+        [
+            [0,0,0,0,0],
+            [0,1,1,1,0],
+            [0,1,0,1,0],
+            [1,1,1,1,0],
+            [0,1,1,1,0]
+            ],
+
+        [
+            ],
+
+        [
+            ],
+
+        [
+            ]
         ]
