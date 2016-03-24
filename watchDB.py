@@ -1,4 +1,4 @@
-from setting import w_log as wDir, z_loc as zDB, areas
+from setting import w_log as wDir, z_loc as zDB
 import json
 from os import path, mkdir, listdir
 from time import strftime 
@@ -259,3 +259,88 @@ class zone:
 
         return [counter,includeZones]
 
+class block:
+    from setting import areas
+    from math import floor
+    def inBlock(areaID,x,y):
+        area = block.areas[areaID]
+
+        ## check input
+        if x > area['size'][0] or y > area['size'][1] :
+            return 'out of range'
+
+        ## process X
+        perX = area['size'][0] / area['block'][0]
+        blockX = block.floor(x / perX) 
+
+        ## process Y
+        perY = area['size'][1] / area['block'][1]
+        blockY = block.floor(y / perY) 
+
+        return [perX,perY,blockX,blockY]
+
+    def getBlockPos(areaID,x,y):
+        area = block.areas[areaID]
+        ## process X
+        perX = area['size'][0] / area['block'][0]
+        perY = area['size'][1] / area['block'][1]
+
+        LT = [ perX * x , perY * y ]
+        RB = [ perX * ( x+1 ) , perY * ( y+1 ) ]
+
+        return [LT,RB]
+
+    def getBlockRange(areaID):
+        return  block.areas[areaID]['block']
+
+class navi:
+    from setting import blockMap
+    def toTarget(areaID,curBlock,tarBlock,count=None,route=None,UpstreamWay=None):
+        from time import sleep
+        print('your location is '+str(curBlock[0])+','+str(curBlock[1]))
+        if count == None:
+            count = 0
+
+        if route == None:
+            route = []
+        
+        blockSize = block.getBlockRange(areaID)
+        if curBlock[0] > blockSize[0] or\
+            curBlock[1] > blockSize[1]:
+                print('out of range')
+                return [-1,'out of Range']
+
+        #sleep(1)
+
+        if curBlock[0] == tarBlock[0] and \
+            curBlock[1] == tarBlock[1]:
+                return [0,'arrived!!',route]
+
+
+        if count > ( ( blockSize[0] + blockSize[1] ) * 4 ):
+            print('too much step!!')
+            return [-2,'too much step']
+            
+        else:
+            route.append(curBlock)
+            count = count + 1
+            avalaiablePath = []
+            paths = []
+            if UpstreamWay != None:
+                paths.append(UpstreamWay)
+            paths.append[ [1,0],[0,1],[0,-1],[-1,0] ]
+            for path in paths:
+                runing = navi.toTarget(
+                        areaID,
+                        [curBlock[0]+path[0],
+                            curBlock[1]+path[1]],
+                        tarBlock,count,route,path)
+                if (runing[0] >= 0):
+                    avalaiablePath.append(runing[2])
+                    #break;
+                
+            print(str(avalaiablePath))
+            return runing
+
+    def fuckthisteacher():
+        return 'fucked'
