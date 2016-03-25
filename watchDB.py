@@ -317,8 +317,6 @@ class navi:
             route.pop()
     
     def isVisitable(maze, pt, route):
-        #print(pt)
-        #print(maze)
         try:
             return maze[pt[0]][pt[1]] == 1 and pt not in route
         except:
@@ -328,5 +326,15 @@ class navi:
             return end in route
 
     def addRoute(route):
-        #print (route)
         navi.findRoutes.append(eval(str(route)))
+        return True
+
+    def getShortest():
+        bestRoute = None
+        bestRouting = 0
+        for route in navi.findRoutes:
+            if bestRoute == None or len(route) < bestRouting:
+                bestRoute = route
+                bestRouting = len(route)
+        return bestRoute
+
