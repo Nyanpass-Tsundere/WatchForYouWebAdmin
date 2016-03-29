@@ -1,32 +1,20 @@
-{% extends "2line-with-side.html" %} 
+{% extends "2row-base.html" %} 
 
 {% block naviZoneClass %}active{% endblock %}
 
 {% block header %}
+	<script src="/static/watchZone.js"></script>
 {% endblock %}
 
-{% block title %}管理室主畫面{% endblock %}
+{% block title %}區域管理{% endblock %}
 
 {% block sideFrame %}
 <div class="column ui vertical pointing menu" id="watchList">
-	<h4 class="ui top attached inverted header">手錶清單</h4>
+	<h4 class="ui top attached inverted header">區域設定</h4>
 </div>
 {% endblock %}
 
-{% block MainInfo %}
-<!--div class="ui secondary pointing menu">
-	<a class="active item">
-		系統通知
-	</a>
-</div>
-
-<div class="ui" id="infomations">
-	<p>通知事項一</p>
-	<p>通知事項二</p>
-	<p>通知事項三</p>
-</div-->
-{% endblock %}
-{% block Main %}
+{% block mainFrame %}
 <div class="ui secondary pointing menu" id="floorList">
 	<!--div class="right menu">
 		<a class="ui item">
@@ -37,7 +25,6 @@
 <div class="ui" id="map">
 	<!--如果需要讓地圖填滿寬度，加入fluid到class中-->
 	<img src="/static/maps/loading.png" class="ui centered image" id="floorMap" onload="getImageInfo();">
-	<div id="map_position"></div>
 </div>
 
 {% endblock %}
