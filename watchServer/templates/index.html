@@ -1,4 +1,4 @@
-{% extends "2line-with-side.html" %} 
+{% extends "2row-base.html" %} 
 
 {% block naviIndexClass %}active{% endblock %}
 
@@ -14,20 +14,7 @@
 </div>
 {% endblock %}
 
-{% block MainInfo %}
-<!--div class="ui secondary pointing menu">
-	<a class="active item">
-		系統通知
-	</a>
-</div>
-
-<div class="ui" id="infomations">
-	<p>通知事項一</p>
-	<p>通知事項二</p>
-	<p>通知事項三</p>
-</div-->
-{% endblock %}
-{% block Main %}
+{% block mainFrame %}
 <div class="ui secondary pointing menu" id="floorList">
 	<!--div class="right menu">
 		<a class="ui item">
