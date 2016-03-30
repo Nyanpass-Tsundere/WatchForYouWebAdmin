@@ -1,6 +1,6 @@
 from flask import Blueprint, abort
 import json
-from watchDB import watchManager, watchSession
+from watchDB import watchManager, watchSession, zone
 from setting import areas
 
 webAPI = Blueprint('webAPI', __name__,
@@ -39,3 +39,7 @@ def ctWatch(ID):
 
 def locs(ID,NUMBER=1):
     return json.dumps(watchManager.getPos(ID,NUMBER))
+
+@webAPI.route('/zone/list/<mapID>')
+def listZone(mapID):
+    return json.dumps(zone.listZone(mapID))
