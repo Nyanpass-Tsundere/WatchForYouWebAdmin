@@ -1,11 +1,14 @@
 // Init vars
 var zones;
+var rightClick;
+var leftClick;
 
 //Webpage Init
 $( document ).ready(function() {
 	getAreas().done(function () {
 		setArea(0);
 		getZones(cur_map);
+		makeClickEvent();
 	});
 });
 
@@ -14,6 +17,25 @@ $( window ).resize(function() {
 		scaleZone(key,val)
 	});
 })
+
+function makeClickEvent() {
+	$('#floorMap').mousedown(function(e) {
+		var offset = $(this).offset();
+		var pos = [e.pageX - offset.left , e.pageY - offset.top] 
+		updateClick(e.which,pos)
+	});	
+}
+
+function updateClick(click,pos) {
+		switch (click) {
+			case 1:
+				leftClick = pos
+				break;
+			case 3:
+				rightClick = pos
+				break;
+		}
+}
 
 function getZones(MapID) {
 	var r = $.Deferred();

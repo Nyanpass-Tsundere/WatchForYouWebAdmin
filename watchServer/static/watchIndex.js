@@ -1,8 +1,6 @@
 // Init vars
 var watchs;
 var cur_watch = 0;
-var maps;
-var cur_map = 0;
 var mapDotSize = {height: 0, width: 0};
 
 //Webpage Init

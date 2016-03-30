@@ -1,5 +1,7 @@
 var api_url="api_web/"
 var imgLocs;
+var maps;
+var cur_map = 0;
 
 $( window ).resize(function() {
 	getImageInfo();
@@ -49,6 +51,7 @@ function getImageInfo() {
 	pos.height = $( "#floorMap" ).height();
 	pos.width = $( "#floorMap" ).width();
 	pos.pedding =  parseInt($('#floorMap').css('margin-left'));
+	pos.prec =  $( "#floorMap" ).width() / maps[cur_map]['size'][0] 
 	imgLocs = pos;
 }
 

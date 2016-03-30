@@ -9,18 +9,30 @@
 {% block title %}區域管理{% endblock %}
 
 {% block sideFrame %}
-<div class="column ui vertical pointing menu" id="watchList">
+<div class="column ui vertical menu sideMenu" id="zoneMenu">
 	<h4 class="ui top attached inverted header">區域設定</h4>
+	<form >
+		<div class="ui item form">
+			<div class="fields">
+				<div class="field"><input placeholder="左鍵" class="newZonePos" type="text" readonly></div>
+				<div class="field"><input placeholder="右鍵" class="newZonePos" type="text" readonly></div>
+			</div>
+			<div class="field"><input placeholder="新區域名稱" type="text"></div>
+			<div class="ui button" id="newZoneBTN">新增區域</div>
+		</div>
+	</form>
+	<div class="item">
+		3214
+	</div>
+	<div class="item">
+		3215<br>
+		狀態：非警示區
+	</div>
 </div>
 {% endblock %}
 
 {% block mainFrame %}
 <div class="ui secondary pointing menu" id="floorList">
-	<!--div class="right menu">
-		<a class="ui item">
-			其他（？
-		</a>
-	</div-->
 </div>
 <div class="ui" id="map">
 	<!--如果需要讓地圖填滿寬度，加入fluid到class中-->
