@@ -43,15 +43,19 @@ function setArea(areaID) {
 	}
 	$("#area-"+areaID).addClass("active");
 	cur_map = areaID;
-	$("#floorMap").attr("src",maps[cur_map].map)
+	$("#floorMap").attr("src",maps[cur_map]['map'])
 }
 
 function getImageInfo() {
+	//image location on Page
 	var pos = $("#floorMap").position();
+	//when image too small, semantic-ui will add auto margin make image place in center
+	pos['left'] = pos['left'] + parseInt($('#floorMap').css('margin-left'));
+	//image size on page
 	pos.height = $( "#floorMap" ).height();
 	pos.width = $( "#floorMap" ).width();
-	pos.pedding =  parseInt($('#floorMap').css('margin-left'));
-	pos.prec =  $( "#floorMap" ).width() / maps[cur_map]['size'][0] 
+	//ratio for convert real-Location to display-Location
+	pos.ratio =  $( "#floorMap" ).width() / maps[cur_map]['size'][0] 
 	imgLocs = pos;
 }
 

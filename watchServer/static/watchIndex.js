@@ -49,25 +49,23 @@ function getDotSize() {
 }
 
 function movePos(x,y) {
-	$("#map_position").css({"top": x+"px" , "left": y+"px"});
+
 }
 
 function movePosPrec(x,y) {
-	movePos(
-			imgLocs.top + imgLocs.height * x - mapDotSize.height / 2,
-			imgLocs.left + imgLocs.pedding + imgLocs.width * y - mapDotSize.width / 2
-			);
+	x = imgLocs.top + imgLocs.height * x - mapDotSize.height / 2
+	y = imgLocs.left + imgLocs.width * y - mapDotSize.width / 2
+	$("#map_position").css({"top": x+"px" , "left": y+"px"});
 }
 
 function startMoving(watchID,follow) {
 	refreshcon = setInterval(function() {
-			$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
-				if ( data[0][1][2] != cur_map && follow ) {
-					setArea(data[0][1][2])
-				}
-				movePosPrec(data[0][1][0],data[0][1][1])
-
-			})
+		$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
+			if ( data[0][1][2] != cur_map && follow ) {
+				setArea(data[0][1][2])
+			}
+			movePosPrec(data[0][1][0],data[0][1][1])
+		})
 		//$('#postcontainer').load('new/posts.php', function(){  });
 	}, 3000);
 }

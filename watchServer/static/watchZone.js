@@ -27,14 +27,17 @@ function makeClickEvent() {
 }
 
 function updateClick(click,pos) {
-		switch (click) {
-			case 1:
-				leftClick = pos
-				break;
-			case 3:
-				rightClick = pos
-				break;
-		}
+	roundPos = [ Math.round(pos[0] / imgLocs['ratio']),Math.round(pos[1] / imgLocs['ratio']) ]
+	switch (click) {
+		case 1:
+			leftClick = pos
+			$('#leftClick').val(roundPos);
+			break;
+		case 3:
+			rightClick = pos
+			$('#rightClick').val(roundPos);
+			break;
+	}
 }
 
 function getZones(MapID) {
@@ -62,9 +65,9 @@ function writeZone(key,val) {
 
 function scaleZone(key,val) {
 	getImageInfo();
-	y = imgLocs['left'] + eval(val[3])[0] * imgLocs['prec'] + imgLocs['pedding'];
-	x = imgLocs['top'] + eval(val[3])[1] * imgLocs['prec'];
-	width = ( eval(val[4])[0] - eval(val[3])[0] ) * imgLocs['prec'] ;
-	height = ( eval(val[4])[1] - eval(val[3])[1] ) * imgLocs['prec'] ;
+	y = imgLocs['left'] + eval(val[3])[0] * imgLocs['ratio'];
+	x = imgLocs['top'] + eval(val[3])[1] * imgLocs['ratio'];
+	width = ( eval(val[4])[0] - eval(val[3])[0] ) * imgLocs['ratio'] ;
+	height = ( eval(val[4])[1] - eval(val[3])[1] ) * imgLocs['ratio'] ;
 	$("#zone-"+key).css({"top": x+"px" , "left": y+"px", "width": width+"px", "height": height+"px"});
 }
