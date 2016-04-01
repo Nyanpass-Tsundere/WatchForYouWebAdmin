@@ -45,6 +45,7 @@ function getZones(MapID) {
 	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
 		if ( data[0] == 0 ) {
 			zones = data[1];
+			$( ".zone" ).remove();
 		}
 		$.each( zones, function( key, val ){
 			writeZone(key,val)
@@ -56,11 +57,17 @@ function getZones(MapID) {
 
 function writeZone(key,val) {
 	$( "<div/>", {
-		"class": "zone",
+		"class": "zone zoneArea",
 		"id": "zone-"+key,
-		html: "<div class=\"zoneText\">"+val[0]+"</div>"
+		html: "<div class=\"zoneAreaText\">"+val[0]+"</div>"
 	}).appendTo( "#map" );
 	scaleZone(key,val);
+	$( "<div/>",{
+		"class": "item zone cfgableZone",
+		"id": "cfgableZone-"+key,
+		html: val[0]+"<br>"+val[5]
+	
+	}).appendTo( "#zoneMenu" );
 }
 
 function scaleZone(key,val) {
