@@ -10,6 +10,7 @@ $( document ).ready(function() {
 		getZones(cur_map);
 		makeClickEvent();
 	});
+	prepareForm();
 });
 
 $( window ).resize(function() {
@@ -17,6 +18,47 @@ $( window ).resize(function() {
 		scaleZone(key,val)
 	});
 })
+
+
+// form functions
+function prepareForm() {
+	$("#newZoneBTN").on("click", function(){
+		$('.ui.form').submit();
+	});
+
+	var formSettings = {
+		fields: {
+			leftClick: {
+				identifier : 'leftClick',
+				rules: [{
+					type   : 'empty',
+					prompt : '請選擇左鍵座標'
+				}]
+			},
+			rightClick: {
+				identifier : 'rightClick',
+				rules: [{
+					type   : 'empty',
+					prompt : '請選擇右鍵座標'
+				}]
+			},
+			name: {
+				identifier : 'zoneName',
+				rules: [{
+					type   : 'empty',
+					prompt : '請輸入區域名稱'
+				}]
+			},
+		},
+		onSuccess: formSuc ,
+	}
+
+	$('#newZoneForm').form(formSettings);
+}
+
+function formSuc() {
+  alert("Valid Submission, modal will close.");
+}
 
 function makeClickEvent() {
 	$('#floorMap').mousedown(function(e) {

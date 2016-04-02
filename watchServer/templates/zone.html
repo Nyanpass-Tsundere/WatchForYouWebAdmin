@@ -11,12 +11,14 @@
 {% block sideFrame %}
 <div class="column ui vertical menu sideMenu" id="zoneMenu">
 	<h4 class="ui top attached inverted header">區域設定</h4>
-	<div class="ui item form" id="zoneConfig" >
+	<div class="ui item form" id="newZoneForm" >
 		<div class="field"><input placeholder="左鍵座標" class="newZonePos" type="text" readonly id="leftClick"></div>
 		<div class="field"><input placeholder="右鍵座標" class="newZonePos" type="text" readonly id="rightClick"></div>
-		<div class="field"><input placeholder="新區域名稱" type="text"></div>
-		<div class="ui button" id="newZoneBTN">新增區域</div>
+		<div class="field"><input placeholder="新區域名稱" type="text" id="zoneName"></div>
+		<div class="ui submit button" id="newZoneBTN">新增區域</div>
+		<div class="ui error message"></div>
 	</div>
+
 	<div class="item zone">
 		loading
 	</div>
