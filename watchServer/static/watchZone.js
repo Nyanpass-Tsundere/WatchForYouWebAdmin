@@ -5,16 +5,16 @@ var leftClick;
 
 //Webpage Init
 $( document ).ready(function() {
-	getAreas().done(function () {
-		setArea(0);
+	getMaps().done(function () {
+		setMap(0);
 		$( "#floorMap" ).load(function() {
 			getZones(cur_map).done(function() {
 				startLoadImageInfo();
 				startScaleZone();
 			});
 		});
-		makeClickEvent();
 	});
+	makeClickEvent();
 	prepareForm();
 });
 

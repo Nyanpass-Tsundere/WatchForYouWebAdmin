@@ -8,8 +8,8 @@ $( document ).ready(function() {
 	getWatchs().done(function() {
 		setWatch(0);
 	});
-	getAreas().done(function () {
-		setArea(0);
+	getMaps().done(function () {
+		setMap(0);
 		getImageInfo();
 	});
 	getDotSize();
@@ -64,7 +64,7 @@ function startMoving(watchID,follow) {
 	refreshcon = setInterval(function() {
 		$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
 			if ( data[0][1][2] != cur_map && follow ) {
-				setArea(data[0][1][2])
+				setMap(data[0][1][2])
 			}
 			movePosPrec(data[0][1][0],data[0][1][1])
 		})

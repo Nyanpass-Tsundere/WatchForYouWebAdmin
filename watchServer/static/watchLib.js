@@ -20,7 +20,7 @@ function setWatch(watchID) {
 }
 
 //function-about-maps
-function getAreas() {
+function getMaps() {
 	var r = $.Deferred();
 	$.getJSON( api_url+"maps", function( data ) {
 		maps = data;
@@ -29,7 +29,7 @@ function getAreas() {
 			$( "<a/>", {
 				"class": "item",
 				"id": "area-"+key,
-				"href": "javascript: setArea("+key+");",
+				"href": "javascript: setMap("+key+");",
 				html: val.name
 			}).appendTo( "#floorList" );
 			r.resolve();
@@ -38,7 +38,7 @@ function getAreas() {
 	return r;
 };
 
-function setArea(areaID) {
+function setMap(areaID) {
 	if ( cur_map >= 0 ) {
 		$("#area-"+cur_map).removeClass("active");
 	}
