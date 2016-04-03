@@ -229,7 +229,7 @@ class zone:
             try:
                 cursor.execute('SELECT * FROM '+TableName)
             except:
-                createZoneTable(MapID)
+                zone.createZoneTable(MapID)
                 return [-1,'table not exist']
             data = cursor.fetchall()
             conn.close
