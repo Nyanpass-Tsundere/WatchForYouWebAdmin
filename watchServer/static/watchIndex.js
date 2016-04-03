@@ -10,7 +10,9 @@ $( document ).ready(function() {
 	});
 	getMaps().done(function () {
 		setMap(0);
-		getImageInfo();
+		$( "#floorMap" ).load(function() {
+			getImageInfo();
+		});
 	});
 	getDotSize();
 	startLoadImageInfo();

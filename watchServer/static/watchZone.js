@@ -9,6 +9,7 @@ $( document ).ready(function() {
 		setMap(0);
 		$( "#floorMap" ).load(function() {
 			getZones(cur_map);
+			getImageInfo();
 		});
 		startLoadImageInfo();
 		startScaleZone();
