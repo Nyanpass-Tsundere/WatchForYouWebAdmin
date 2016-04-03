@@ -97,6 +97,9 @@ function makeClickEvent() {
 		var pos = [e.pageX - offset.left , e.pageY - offset.top] 
 		updateClick(e.which,pos)
 	});	
+	$('#floorMap').bind('contextmenu', function(e) {
+		return false;
+	}); 
 }
 
 function updateClick(click,pos) {
