@@ -12,6 +12,7 @@ $( document ).ready(function() {
 		setMap(0);
 		$( "#floorMap" ).load(function() {
 			getImageInfo();
+			aMove(watchs[cur_watch]['ID'],false)
 		});
 	});
 	getDotSize();
@@ -64,14 +65,24 @@ function movePosPrec(x,y) {
 
 function startMoving(watchID,follow) {
 	refreshcon = setInterval(function() {
-		$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
-			if ( data[0][1][2] != cur_map && follow ) {
-				setMap(data[0][1][2])
-			}
-			movePosPrec(data[0][1][0],data[0][1][1])
-		})
+		aMove(watchID,follow);
 		//$('#postcontainer').load('new/posts.php', function(){  });
 	}, 3000);
+}
+
+function aMove(watchID,follow) {
+		$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
+			if ( data[0][1][2] == cur_map ) {
+				movePosPrec(data[0][1][0],data[0][1][1])
+			}
+			else if ( data[0][1][2] != cur_map && follow ) {
+				setMap(data[0][1][2])
+				movePosPrec(data[0][1][0],data[0][1][1])
+			}
+			else {
+				movePosPrec(1.1,1,1)
+			}
+		})
 }
 
 function stopMoving() {
