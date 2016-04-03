@@ -12,6 +12,7 @@ $( document ).ready(function() {
 		setArea(0);
 	});
 	getDotSize();
+	startLoadImageInfo();
 });
 
 //function-about-watchs

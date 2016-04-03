@@ -8,18 +8,20 @@ $( document ).ready(function() {
 	getAreas().done(function () {
 		setArea(0);
 		getZones(cur_map);
+		startLoadImageInfo();
 		makeClickEvent();
+		startScaleZone();
 	});
 	prepareForm();
 });
 
-$( window ).resize(function() {
-	$.each( zones, function( key, val ){
-		scaleZone(key,val)
-	});
-})
-
-
+function startScaleZone() {
+	$( window ).resize(function() {
+		$.each( zones, function( key, val ){
+			scaleZone(key,val)
+		});
+	})
+}
 // form functions
 function prepareForm() {
 	$("#newZoneBTN").on("click", function(){

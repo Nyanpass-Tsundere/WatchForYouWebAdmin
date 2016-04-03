@@ -3,10 +3,11 @@ var imgLocs;
 var maps;
 var cur_map = 0;
 
-$( window ).resize(function() {
-	getImageInfo();
-});
-
+function startLoadImageInfo() {
+	$( window ).resize(function() {
+		getImageInfo();
+	});
+}
 //function-about-watchs
 function setWatch(watchID) {
 	if ( cur_watch >= 0 ) {
