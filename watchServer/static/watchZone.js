@@ -2,6 +2,7 @@
 var zones;
 var rightClick;
 var leftClick;
+var resp;
 
 //Webpage Init
 $( document ).ready(function() {
@@ -33,7 +34,7 @@ function ScaleZone() {
 // form functions
 function prepareForm() {
 	$("#newZoneBTN").on("click", function(){
-		$('.ui.form').submit();
+		//$('.ui.form').submit();
 	});
 
 	var formSettings = {
@@ -60,14 +61,34 @@ function prepareForm() {
 				}]
 			},
 		},
-		onSuccess: formSuc ,
+		onSuccess: formVal ,
 	}
 
 	$('#newZoneForm').form(formSettings);
 }
 
+function formVal() {
+	resp = $.ajax({ 
+		url: api_url + 'zone/new',
+		method: 'POST', 
+		data: {
+			MapID: cur_map,
+			Name: $( "#zoneName" ).val(),
+			LT: '[' + leftClick.toString() + ']',
+			RB: '[' + rightClick.toString() + ']',
+		},
+	}).
+	done( formSuc ).
+	fail( formFail );
+}
+
 function formSuc() {
-  alert("Valid Submission, modal will close.");
+	alert(resp.responseText)
+	getZones(cur_map)
+}
+
+function formFail() {
+	alert(resp.responseText)
 }
 
 function makeClickEvent() {

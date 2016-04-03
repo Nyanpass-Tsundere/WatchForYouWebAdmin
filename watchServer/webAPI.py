@@ -1,4 +1,4 @@
-from flask import Blueprint, abort
+from flask import Blueprint, abort, request
 import json
 from watchDB import watchManager, watchSession, zone
 from setting import areas
@@ -43,3 +43,24 @@ def locs(ID,NUMBER=1):
 @webAPI.route('/zone/list/<mapID>')
 def listZone(mapID):
     return json.dumps(zone.listZone(mapID))
+
+@webAPI.route('/zone/new',methods=['POST'])
+def newZone():
+    MapID = request.form.get('MapID')
+    zoneName = request.form.get('Name')
+    LT = request.form.get('LT')
+    RB = request.form.get('RB')
+
+    x1 = eval(LT)[0]
+    y1 = eval(LT)[1]
+    x2 = eval(RB)[0]
+    y2 = eval(RB)[1]
+
+    if ( x1 > x2 or y1 > y2 or len(zoneName) < 2 ):
+        return json.dumps([-2,'Data wrong!!']), 400
+    else:
+        dbOP = zone.newZone(MapID,zoneName,LT,RB)
+        if dbOP[0] >= 0:
+            return json.dumps(dbOP), 200
+        else:
+            return json.dumps(dbOP), 500
