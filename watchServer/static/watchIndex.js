@@ -10,6 +10,7 @@ $( document ).ready(function() {
 	});
 	getAreas().done(function () {
 		setArea(0);
+		getImageInfo();
 	});
 	getDotSize();
 	startLoadImageInfo();

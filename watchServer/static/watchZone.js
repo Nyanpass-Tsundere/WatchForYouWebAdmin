@@ -7,21 +7,29 @@ var leftClick;
 $( document ).ready(function() {
 	getAreas().done(function () {
 		setArea(0);
-		getZones(cur_map);
-		startLoadImageInfo();
+		$( "#floorMap" ).load(function() {
+			getZones(cur_map).done(function() {
+				startLoadImageInfo();
+				startScaleZone();
+			});
+		});
 		makeClickEvent();
-		startScaleZone();
 	});
 	prepareForm();
 });
 
 function startScaleZone() {
 	$( window ).resize(function() {
-		$.each( zones, function( key, val ){
-			scaleZone(key,val)
-		});
+		ScaleZone()
 	})
 }
+
+function ScaleZone() {
+	$.each( zones, function( key, val ){
+		scaleZone(key,val)
+	});
+}
+
 // form functions
 function prepareForm() {
 	$("#newZoneBTN").on("click", function(){
