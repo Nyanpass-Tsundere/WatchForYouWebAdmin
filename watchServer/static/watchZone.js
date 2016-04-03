@@ -8,11 +8,10 @@ $( document ).ready(function() {
 	getMaps().done(function () {
 		setMap(0);
 		$( "#floorMap" ).load(function() {
-			getZones(cur_map).done(function() {
-				startLoadImageInfo();
-				startScaleZone();
-			});
+			getZones(cur_map);
 		});
+		startLoadImageInfo();
+		startScaleZone();
 	});
 	makeClickEvent();
 	prepareForm();
@@ -95,13 +94,13 @@ function updateClick(click,pos) {
 function getZones(MapID) {
 	var r = $.Deferred();
 	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
+		$( ".zone" ).remove();
 		if ( data[0] == 0 ) {
 			zones = data[1];
-			$( ".zone" ).remove();
+			$.each( zones, function( key, val ){
+				writeZone(key,val)
+			});
 		}
-		$.each( zones, function( key, val ){
-			writeZone(key,val)
-		});
 		r.resolve();
 	})
 	return r;
