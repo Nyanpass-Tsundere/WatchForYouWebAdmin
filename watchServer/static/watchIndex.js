@@ -47,6 +47,16 @@ function setWatch(watchID) {
 	startMoving(watchs[watchID]['ID'],1)
 }
 
+function setWatch(watchID) {
+	if ( cur_watch >= 0 ) {
+		$("#watch-"+cur_watch).removeClass("active");
+		stopMoving()
+	}
+	$("#watch-"+watchID).addClass("active");
+	cur_watch = watchID;
+	startMoving(watchs[watchID]['ID'],1)
+}
+
 // functions for the moving DOT
 function getDotSize() {
 	mapDotSize.height=$("#map_position").height();

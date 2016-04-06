@@ -8,18 +8,8 @@ function startLoadImageInfo() {
 		getImageInfo();
 	});
 }
-//function-about-watchs
-function setWatch(watchID) {
-	if ( cur_watch >= 0 ) {
-		$("#watch-"+cur_watch).removeClass("active");
-		stopMoving()
-	}
-	$("#watch-"+watchID).addClass("active");
-	cur_watch = watchID;
-	startMoving(watchs[watchID]['ID'],1)
-}
 
-//function-about-maps
+//function-about-map-image
 function getMaps() {
 	var r = $.Deferred();
 	$.getJSON( api_url+"maps", function( data ) {
@@ -60,3 +50,54 @@ function getImageInfo() {
 	imgLocs = pos;
 }
 
+//Function about Zones
+function startScaleZone() {
+	$( window ).resize(function() {
+		ScaleZone()
+	})
+}
+
+function ScaleZone() {
+	$.each( zones, function( key, val ){
+		scaleZone(key,val)
+	});
+}
+
+function getZones(MapID) {
+	var r = $.Deferred();
+	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
+		$( ".zone" ).remove();
+		if ( data[0] == 0 ) {
+			zones = data[1];
+			$.each( zones, function( key, val ){
+				writeZone(key,val)
+			});
+		}
+		r.resolve();
+	})
+	return r;
+}
+
+function writeZone(key,val) {
+	$( "<div/>", {
+		"class": "zone zoneArea",
+		"id": "zone-"+key,
+		html: "<div class=\"zoneAreaText\">"+val[0]+"</div>"
+	}).appendTo( "#map" );
+	scaleZone(key,val);
+	$( "<div/>",{
+		"class": "item zone cfgableZone",
+		"id": "cfgableZone-"+key,
+		html: val[0]+"<br>"+val[5]
+	
+	}).appendTo( "#zoneMenu" );
+}
+
+function scaleZone(key,val) {
+	getImageInfo();
+	y = imgLocs['left'] + eval(val[3])[0] * imgLocs['ratio'];
+	x = imgLocs['top'] + eval(val[3])[1] * imgLocs['ratio'];
+	width = ( eval(val[4])[0] - eval(val[3])[0] ) * imgLocs['ratio'] ;
+	height = ( eval(val[4])[1] - eval(val[3])[1] ) * imgLocs['ratio'] ;
+	$("#zone-"+key).css({"top": x+"px" , "left": y+"px", "width": width+"px", "height": height+"px"});
+}
