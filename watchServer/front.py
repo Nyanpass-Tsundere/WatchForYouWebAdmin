@@ -15,3 +15,7 @@ def zone():
 @front.route('/login/')
 def login():
     return render_template('login.html')
+
+@front.route('/watch')
+def watch():
+    return render_template('watch.html')

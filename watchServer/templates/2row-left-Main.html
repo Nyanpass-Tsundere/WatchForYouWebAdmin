@@ -1,0 +1,13 @@
+{% extends "base-navi.html" %} 
+
+{% block mainContentArea %}
+	<div class="ui container grid" id="MainFrame">
+		<div class="five wide column" id="MainSideBar">
+			{% block sideFrame %}{% endblock %}
+		</div>
+		<div class="one wide column"></div>
+		<div class="ten wide column" id="MainFrame">
+			{% block mainFrame %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}

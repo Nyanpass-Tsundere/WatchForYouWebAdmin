@@ -104,3 +104,12 @@ function updateClick(click,pos) {
 	}
 }
 
+function writeZoneToMenu(key,val) {
+	$( "<div/>",{
+		"class": "item zone cfgableZone",
+		"id": "cfgableZone-"+key,
+		html: val[0]+"<br>"+val[5]
+	}).appendTo( "#zoneMenu" );
+}
+
+

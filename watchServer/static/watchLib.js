@@ -63,34 +63,32 @@ function ScaleZone() {
 	});
 }
 
-function getZones(MapID) {
+function getZones(MapID,writeToMap = true,writeToMenu = true) {
 	var r = $.Deferred();
 	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
 		$( ".zone" ).remove();
 		if ( data[0] == 0 ) {
 			zones = data[1];
-			$.each( zones, function( key, val ){
-				writeZone(key,val)
-			});
+			if ( writeToMap ) 
+				$.each( zones, function( key, val ) 
+					writeZoneToMap(key,val) );
+			
+			if ( writeToMenu ) 
+				$.each( zones, function( key, val )
+					writeZoneToMenu(key,val) );
 		}
 		r.resolve();
 	})
 	return r;
 }
 
-function writeZone(key,val) {
+function writeZoneToMap(key,val) {
 	$( "<div/>", {
 		"class": "zone zoneArea",
 		"id": "zone-"+key,
 		html: "<div class=\"zoneAreaText\">"+val[0]+"</div>"
 	}).appendTo( "#map" );
 	scaleZone(key,val);
-	$( "<div/>",{
-		"class": "item zone cfgableZone",
-		"id": "cfgableZone-"+key,
-		html: val[0]+"<br>"+val[5]
-	
-	}).appendTo( "#zoneMenu" );
 }
 
 function scaleZone(key,val) {
