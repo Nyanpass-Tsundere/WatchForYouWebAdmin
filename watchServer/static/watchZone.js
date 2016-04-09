@@ -105,11 +105,32 @@ function updateClick(click,pos) {
 }
 
 function writeZoneToMenu(key,val) {
+	if (val[5] === 0) {
+		stat = "<span class=\"nonAlertArea\">非警示區</span>";
+		setting = "(<a href=\"javascript: changeZoneAlert("+val[0]+",1);\">變更</a>)"
+	}
+	else {
+		stat = "<span class=\"AlertArea\">強制警示區</span>";
+		setting = "(<a href=\"javascript: changeZoneAlert("+val[0]+",0);\">變更</a>)"
+	}
 	$( "<div/>",{
 		"class": "item zone cfgableZone",
 		"id": "cfgableZone-"+key,
-		html: val[0]+"<br>"+val[5]
+		html: val[0]+"<br>"+
+			"狀態："+stat+setting+"<br>"+
+			"<a href=\"javascript: renameZone("+val[0]+");\" class=\"renameZone\">改名</a>、"+
+			"<a href=\"javascript: delZone("+val[0]+");\" class=\"delZone\">刪除</a>該區域"
 	}).appendTo( "#zoneMenu" );
 }
 
+function changeZoneAlert(zone,target) {
+	alert(zone+","+target);
+}
 
+function renameZone(zone) {
+	alert(zone);
+}
+
+function delZone(zone) {
+	alert(zone);
+}

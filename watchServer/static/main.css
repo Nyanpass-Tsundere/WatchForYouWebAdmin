@@ -63,3 +63,12 @@
 body {
 	background-color: #e6e6e6;
 }
+
+span.nonAlertArea {
+	font-weight: bold;
+}
+
+span.AlertArea {
+	font-weight: bold;
+	color: red;
+}
