@@ -118,19 +118,54 @@ function writeZoneToMenu(key,val) {
 		"id": "cfgableZone-"+key,
 		html: val[0]+"<br>"+
 			"狀態："+stat+setting+"<br>"+
-			"<a href=\"javascript: renameZone("+val[0]+");\" class=\"renameZone\">改名</a>、"+
-			"<a href=\"javascript: delZone("+val[0]+");\" class=\"delZone\">刪除</a>該區域"
+			"<a href=\"javascript: renameZone(\'"+val[0]+"\');\" class=\"renameZone\">改名</a>、"+
+			"<a href=\"javascript: delZone(\'"+val[0]+"\');\" class=\"delZone\">刪除</a>該區域"
 	}).appendTo( "#zoneMenu" );
 }
 
 function changeZoneAlert(zone,target) {
-	alert(cur_map+","+zone+","+target);
+	resp = $.ajax({ 
+		url: api_url + 'zone/setAlert',
+		method: 'POST', 
+		data: {
+			MapID: cur_map,
+			Name: zone,
+			Alert: target,
+		},
+	}).
+	done( formSuc ).
+	fail( formFail );
 }
 
 function renameZone(zone) {
-	alert(cur_map+","+zone);
+	if ( $( "#zoneName" ).val() === "" ) {
+		alert("「新區域名稱」輸入要更改後的名稱！");
+	}
+	else {
+		resp = $.ajax({ 
+			url: api_url + 'zone/rename',
+			method: 'POST', 
+			data: {
+				MapID: cur_map,
+				Name: zone,
+				NewName: $( "#zoneName" ).val(),
+			},
+		}).
+		done( formSuc ).
+		fail( formFail );
+	}
 }
 
 function delZone(zone) {
-	alert(cur_map+","+zone);
+	resp = $.ajax({ 
+		url: api_url + 'zone/del',
+		method: 'POST', 
+		data: {
+			MapID: cur_map,
+			Name: zone,
+		},
+	}).
+	done( formSuc ).
+	fail( formFail );
+	//alert(cur_map+","+zone);
 }
