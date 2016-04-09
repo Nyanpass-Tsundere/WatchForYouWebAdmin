@@ -77,11 +77,11 @@ function getZones(MapID,writeToMap,writeToMenu) {
 			zones = data[1];
 			if ( writeToMap ) 
 				$.each( zones, function( key, val ) {
-					writeZoneToMap(key,val) )};
+					writeZoneToMap(key,val) });
 			
 			if ( writeToMenu ) 
 				$.each( zones, function( key, val ) {
-					writeZoneToMenu(key,val) )};
+					writeZoneToMenu(key,val) });
 		}
 		r.resolve();
 	})
