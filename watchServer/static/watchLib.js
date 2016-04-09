@@ -63,7 +63,13 @@ function ScaleZone() {
 	});
 }
 
-function getZones(MapID,writeToMap = true,writeToMenu = true) {
+function getZones(MapID,writeToMap,writeToMenu) {
+	if ( writeToMap === undefined ) 
+		writeToMap = true;
+	
+	if ( writeToMenu === undefined )
+		writeToMenu === true;
+
 	var r = $.Deferred();
 	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
 		$( ".zone" ).remove();
