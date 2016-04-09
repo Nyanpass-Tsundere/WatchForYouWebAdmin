@@ -234,7 +234,42 @@ class zone:
             data = cursor.fetchall()
             conn.close
         return [0,data]
-            
+
+    def setAlertZone(MapID,ZoneName,alert):
+        TableName = zone.genTableName(MapID)
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('UPDATE '+TableName+' SET alwaysAlert = ? WHERE Name = ?;',[alert,ZoneName])
+            except:
+                return [-1,'something wrong']
+            conn.commit
+            conn.close
+        return [0,"sucessful update"]
+
+    def delZone(MapID,ZoneName):
+        TableName = zone.genTableName(MapID)
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('DELETE FROM '+TableName+' WHERE Name = ?;',[ZoneName])
+            except:
+                return [-1,'something wrong']
+            conn.commit
+            conn.close
+        return [0,"sucessful update"]
+
+    def renameZone(MapID,ZoneName,ZoneNewName):
+        TableName = zone.genTableName(MapID)
+        with zone.sqlite3.connect(zDB) as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('UPDATE '+TableName+' SET Name = ? WHERE Name = ?;',[ZoneNewName,ZoneName])
+            except:
+                return [-1,'something wrong']
+            conn.commit
+            conn.close
+        return [0,"sucessful update"]
 
     def inZone(MapID,X,Y,AlertArea=False):
         data = zone.listZone(MapID)

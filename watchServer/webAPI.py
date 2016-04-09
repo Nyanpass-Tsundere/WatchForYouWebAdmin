@@ -64,3 +64,39 @@ def newZone():
             return json.dumps(dbOP), 200
         else:
             return json.dumps(dbOP), 500
+
+@webAPI.route('/zone/rename',methods=['POST'])
+def renameZone():
+    MapID = request.form.get('MapID')
+    zoneName = request.form.get('Name')
+    zoneNewName = request.form.get('NewName')
+
+    dbOP = zone.renameZone(MapID,zoneName,zoneNewName)
+    if dbOP[0] >= 0:
+        return json.dumps(dbOP), 200
+    else:
+        return json.dumps(dbOP), 500
+
+@webAPI.route('/zone/setAlert',methods=['POST'])
+def setAlertZone():
+    MapID = request.form.get('MapID')
+    zoneName = request.form.get('Name')
+    zoneAlert = request.form.get('Alert')
+
+    dbOP = zone.setAlertZone(MapID,zoneName,zoneAlert)
+    if dbOP[0] >= 0:
+        return json.dumps(dbOP), 200
+    else:
+        return json.dumps(dbOP), 500
+
+@webAPI.route('/zone/del',methods=['POST'])
+def delZone():
+    MapID = request.form.get('MapID')
+    zoneName = request.form.get('Name')
+
+    dbOP = zone.delZone(MapID,zoneName)
+    if dbOP[0] >= 0:
+        return json.dumps(dbOP), 200
+    else:
+        return json.dumps(dbOP), 500
+

@@ -124,13 +124,13 @@ function writeZoneToMenu(key,val) {
 }
 
 function changeZoneAlert(zone,target) {
-	alert(zone+","+target);
+	alert(cur_map+","+zone+","+target);
 }
 
 function renameZone(zone) {
-	alert(zone);
+	alert(cur_map+","+zone);
 }
 
 function delZone(zone) {
-	alert(zone);
+	alert(cur_map+","+zone);
 }
