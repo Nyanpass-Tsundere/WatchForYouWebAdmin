@@ -106,21 +106,26 @@ function updateClick(click,pos) {
 
 function writeZoneToMenu(key,val) {
 	if (val[5] === 0) {
-		stat = "<span class=\"nonAlertArea\">非警示區</span>";
-		setting = "(<a href=\"javascript: changeZoneAlert("+val[0]+",1);\">變更</a>)"
+		stat = "";
+		setting = "<a href=\"javascript: changeZoneAlert("+val[0]+",1);\" class=\"item\">變更警示模式</a>"
 	}
 	else {
-		stat = "<span class=\"AlertArea\">強制警示區</span>";
-		setting = "(<a href=\"javascript: changeZoneAlert("+val[0]+",0);\">變更</a>)"
+		stat = "<span class=\"AlertArea\">(強制警示)</span>";
+		setting = "<a href=\"javascript: changeZoneAlert("+val[0]+",0);\" class=\"item\">變更警示模式</a>"
 	}
+	setting+="<a href=\"javascript: renameZone(\'"+val[0]+"\');\" class=\"renameZone item\">改名</a>"
+	setting+="<a href=\"javascript: delZone(\'"+val[0]+"\');\" class=\"delZone item\">刪除</a>"
+	menu = "<div class=\"menu\">"+setting+"</div>";
+
+	icon = "<i class=\"dropdown icon\"></i>";
 	$( "<div/>",{
-		"class": "item zone cfgableZone",
+		//"class": "item zone cfgableZone",
+		"class": "ui left pointing dropdown link item  zone cfgableZone",
 		"id": "cfgableZone-"+key,
-		html: val[0]+"<br>"+
-			"狀態："+stat+setting+"<br>"+
-			"<a href=\"javascript: renameZone(\'"+val[0]+"\');\" class=\"renameZone\">改名</a>、"+
-			"<a href=\"javascript: delZone(\'"+val[0]+"\');\" class=\"delZone\">刪除</a>該區域"
+		html: icon + val[0]+stat+menu
 	}).appendTo( "#zoneMenu" );
+	//$('ui.dropdown').dropdown();
+	$('#cfgableZone-'+key).dropdown();
 }
 
 function changeZoneAlert(zone,target) {

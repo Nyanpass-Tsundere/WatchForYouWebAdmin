@@ -52,7 +52,7 @@
 .zoneArea{
 	position: absolute;
 	background-color: rgba(255,255,0,0.5);
-	z-index: 20;
+	/*z-index: 20;*/
 }
 .zoneAreaText {
 	background: rgba(255,255,255,0.8);
@@ -64,11 +64,12 @@ body {
 	background-color: #e6e6e6;
 }
 
-span.nonAlertArea {
-	font-weight: bold;
-}
-
 span.AlertArea {
 	font-weight: bold;
 	color: red;
+}
+
+.ui.menu .ui.dropdown .menu > .item.delZone {
+	font-weight: bold;
+	color: red !important;
 }

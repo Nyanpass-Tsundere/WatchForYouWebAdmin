@@ -5,9 +5,7 @@ $( document ).ready(function() {
 		setMap(0);
 		getImageInfo();
 	});
-	$('.ui.dropdown')
-		.dropdown()
-	;
+	$('.ui.dropdown').dropdown();
 });
 
 function readAllZone() {
