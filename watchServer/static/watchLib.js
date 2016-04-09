@@ -76,12 +76,12 @@ function getZones(MapID,writeToMap,writeToMenu) {
 		if ( data[0] == 0 ) {
 			zones = data[1];
 			if ( writeToMap ) 
-				$.each( zones, function( key, val ) 
-					writeZoneToMap(key,val) );
+				$.each( zones, function( key, val ) {
+					writeZoneToMap(key,val) )};
 			
 			if ( writeToMenu ) 
-				$.each( zones, function( key, val )
-					writeZoneToMenu(key,val) );
+				$.each( zones, function( key, val ) {
+					writeZoneToMenu(key,val) )};
 		}
 		r.resolve();
 	})
