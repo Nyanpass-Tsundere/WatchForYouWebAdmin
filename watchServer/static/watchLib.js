@@ -68,7 +68,7 @@ function getZones(MapID,writeToMap,writeToMenu) {
 		writeToMap = true;
 	
 	if ( writeToMenu === undefined )
-		writeToMenu === true;
+		writeToMenu = true;
 
 	var r = $.Deferred();
 	$.getJSON( api_url+"zone/list/"+MapID, function( data ) {
