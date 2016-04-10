@@ -54,9 +54,9 @@ function readWatchs() {
 function launchActForm(watchNum) {
 	title = "<h4>"+watchs[watchNum]['name']+"("+watchs[watchNum]['ID']+")"+"</h4>";
 	menu = $( "<div/>", {
-		"class": "item",
+		"class": "item ui form",
 		"id": "settingArea",
-		html: title+'<div class="ui form">'+'<div id="settingAreaZones" />'+'<div id="settingAreaButtons" />'+'</div>',
+		html: title+'<div id="settingAreaZones" />'+'<div id="settingAreaButtons" />',
 	});
 	$( "#settingArea" ).replaceWith(menu);
 
