@@ -73,3 +73,6 @@ span.AlertArea {
 	font-weight: bold;
 	color: red !important;
 }
+div.checkbox {
+	margin-right: 2.5em;
+}

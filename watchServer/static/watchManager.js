@@ -63,18 +63,42 @@ function launchActForm(watchNum) {
 	Zones = $( "<div/>",{ 
 		"class": "field",
 		"id": "settingAreaZones",
-		html: "<p>許可區域：</p>"+'<div class="ui checkbox"><input name="example" type="checkbox"><label>區域001</label></div>',
+		html: "<p>許可區域：</p>",
 	});
 	$( "#settingAreaZones" ).replaceWith(Zones);
+
+	$.each( allZone, function( mapID, mapZones ) {
+		$.each( mapZones , function( key,Zone) {
+			var mapName = maps[mapID]['name'];
+			var zoneName = Zone[0];
+
+			$( "<div/>", {
+				"class": 'ui checkbox',
+				html: '<input name="['+mapID+','+Zone[0]+']" type="checkbox"><label>'+mapName+'-'+Zone[0]+'</label>'
+			}).appendTo( "#settingAreaZones" );
+		});
+	});
 
 	buttons = $( "<div/>", {
 		"class": "field",
 		"id": "settingAreaButtons",
-		html: '<button class="ui primary button submit" style="width: 70%;">啟動手錶</button>'+
-			'<button class="ui button" style="width: calc(30%-7px);">取消</button>',
+		html: '<button class="ui primary button submit" style="width: 70%;" id="settingActBtn">啟動手錶</button>'+
+			'<button class="ui button" style="width: calc(30%-7px);" id="settingCanBtn">取消</button>',
 	});
 	$( "#settingAreaButtons" ).replaceWith(buttons);
-
+	
+	$( "#settingCanBtn" ).click(function() {
+		reloadForm();
+	}); 
 }
 
-
+function reloadForm() {
+	sideBar = $( "<div/>", {
+		"class": "column ui vertical menu sideMenu",
+		"id": "zoneMenu",
+		html: '<h3 class="ui top attached inverted header">手錶設定</h3>'+
+			'<div id="settingArea"></div>',
+	});
+	$( "#zoneMenu" ).replaceWith(sideBar);
+	readWatchs();
+}
