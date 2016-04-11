@@ -1,6 +1,7 @@
 var allZone
 var formBoxs
 var cur_watch
+var resp
 
 $( document ).ready(function() {
 	getMaps().done(function() {
@@ -60,7 +61,10 @@ function launchActForm(watchNum) {
 	menu = $( "<div/>", {
 		"class": "item ui form",
 		"id": "settingArea",
-		html: title+'<div id="settingAreaZones" />'+'<div id="settingAreaButtons" />',
+		html: title+'<div id="settingAreaZones" />'+
+			'<div id="settingAreaTime" />'+
+			'<div id="settingAreaButtons" />',
+
 	});
 	$( "#settingArea" ).replaceWith(menu);
 
@@ -86,6 +90,13 @@ function launchActForm(watchNum) {
 		});
 	});
 
+	time = $( "<div/>", {
+		"class": "field",
+		"id": "settingAreaTime",
+		html: '<label>許可時間</label><input type="number" value="2" id="allowHours">',
+	});
+	$( "#settingAreaTime" ).replaceWith(time);
+
 	buttons = $( "<div/>", {
 		"class": "field",
 		"id": "settingAreaButtons",
@@ -104,14 +115,32 @@ function launchActForm(watchNum) {
 }
 
 function submitForm() {
-	console.log(watchs[cur_watch]['ID']);
 	allowArea = readCheckedBox();
+	allowHour = $( "#allowHours" ).val()
 	if ( allowArea.length == 0 ) {
 		alert("尚未選取可以進入的區域")
 	}
-	else {
-		string = JSON.stringify(allowArea)
-		console.log(string);
+	else if ( allowHour == "" ) {
+		alert("請輸入許可時間")
+	}
+   	else{
+		allowAreaStr = JSON.stringify(allowArea);
+		resp = $.ajax({
+			url: api_url + 'watch/Act',
+			method: 'POST',
+			data: {
+				ID: watchs[cur_watch]['ID'],
+				hour: allowHour,
+				zone: allowAreaStr,
+			},
+		})
+		.done(formSuc)
+		.fail(formFail)
+		.always(function() {
+		});
+
+		//console.log(watchs[cur_watch]['ID']);
+		//console.log(string);
 	}
 }
 
@@ -135,3 +164,13 @@ function reloadForm() {
 	$( "#zoneMenu" ).replaceWith(sideBar);
 	readWatchs();
 }
+
+function formSuc() {
+	alert(resp.responseText)
+	reloadForm();
+}
+
+function formFail() {
+	alert(resp.responseText)
+}
+

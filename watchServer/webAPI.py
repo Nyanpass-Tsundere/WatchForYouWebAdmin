@@ -30,9 +30,31 @@ def getActWatchs():
         fullData.append( {'name': name, 'ID': watch} )
     return json.dumps(fullData)
 
-@webAPI.route('/watch/Act/<ID>')
-def ctWatch(ID):
-    return json.dumps(watchSession.new(ID,"2016-06-06"))
+@webAPI.route('/watch/Act',methods=['POST'])
+def ActWatch(ID = None):
+    from setting import t_format
+    from datetime import datetime, timedelta
+
+    ID = request.form.get('ID')
+    if ( ID == None ):
+        return json.dumps([-2,'no ID']),400
+
+    hour = request.form.get('hour')
+    if ( hour == None ):
+        return json.dumps([-2,'no Hour']),400
+
+    zone = request.form.get('zone')
+    if ( zone == None ):
+        return json.dumps([-2,'no zone']),400
+
+    print(zone)
+    print(json.loads(zone))
+    print(json.dumps(json.loads(zone)))
+
+    expTime = datetime.now() + timedelta(hours=int(hour))
+    expTimeStr = format(expTime, t_format)
+
+    return json.dumps(watchSession.new(ID,expTimeStr,zone))
 
 @webAPI.route('/watch/loc/<ID>')
 @webAPI.route('/watch/loc/<ID>/<NUMBER>')
