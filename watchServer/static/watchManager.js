@@ -87,6 +87,11 @@ function launchActForm(watchNum) {
 				"class": 'ui checkbox',
 				html: '<input type="checkbox" class="zoneBox" id="formBox-'+num+'"><label>'+mapName+'-'+Zone[0]+'</label>'
 			}).appendTo( "#settingAreaZones" );
+			$( "#formBox-"+num ).click(function() {
+				if (cur_map != mapID){
+					setMap(mapID);
+				}
+			});
 		});
 	});
 
