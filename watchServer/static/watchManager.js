@@ -1,13 +1,15 @@
 var allZone
+var formBoxs
+var cur_watch
 
 $( document ).ready(function() {
 	getMaps().done(function() {
 		setMap(0);
 		getImageInfo();
 		readAllZone();
-	});
-	$( "#floorMap" ).load(function() {
-		imageOnlad();
+		$( "#floorMap" ).load(function() {
+			imageOnlad();
+		});
 	});
 	readWatchs();
 });
@@ -52,6 +54,8 @@ function readWatchs() {
 }
 
 function launchActForm(watchNum) {
+	cur_watch = watchNum;
+
 	title = "<h4>"+watchs[watchNum]['name']+"("+watchs[watchNum]['ID']+")"+"</h4>";
 	menu = $( "<div/>", {
 		"class": "item ui form",
@@ -61,20 +65,23 @@ function launchActForm(watchNum) {
 	$( "#settingArea" ).replaceWith(menu);
 
 	Zones = $( "<div/>",{ 
-		"class": "field",
+		"class": "field form",
 		"id": "settingAreaZones",
 		html: "<p>許可區域：</p>",
 	});
 	$( "#settingAreaZones" ).replaceWith(Zones);
 
+	formBoxs = []
 	$.each( allZone, function( mapID, mapZones ) {
 		$.each( mapZones , function( key,Zone) {
 			var mapName = maps[mapID]['name'];
 			var zoneName = Zone[0];
+			var name = JSON.stringify( [mapID,Zone[0]] );
 
+			num = formBoxs.push(name) -1;
 			$( "<div/>", {
 				"class": 'ui checkbox',
-				html: '<input name="['+mapID+','+Zone[0]+']" type="checkbox"><label>'+mapName+'-'+Zone[0]+'</label>'
+				html: '<input type="checkbox" class="zoneBox" id="formBox-'+num+'"><label>'+mapName+'-'+Zone[0]+'</label>'
 			}).appendTo( "#settingAreaZones" );
 		});
 	});
@@ -86,10 +93,36 @@ function launchActForm(watchNum) {
 			'<button class="ui button" style="width: calc(30%-7px);" id="settingCanBtn">取消</button>',
 	});
 	$( "#settingAreaButtons" ).replaceWith(buttons);
+
+	$( "#settingActBtn" ).click(function() {
+		submitForm();
+	})
 	
 	$( "#settingCanBtn" ).click(function() {
 		reloadForm();
 	}); 
+}
+
+function submitForm() {
+	console.log(watchs[cur_watch]['ID']);
+	allowArea = readCheckedBox();
+	if ( allowArea.length == 0 ) {
+		alert("尚未選取可以進入的區域")
+	}
+	else {
+		string = JSON.stringify(allowArea)
+		console.log(string);
+	}
+}
+
+function readCheckedBox() {
+	checked = []
+	$.each(formBoxs,function(key,val) {
+		if ( $( "#formBox-"+key ).prop("checked") ) {
+			checked.push(val);
+		}
+	});
+	return checked;
 }
 
 function reloadForm() {
