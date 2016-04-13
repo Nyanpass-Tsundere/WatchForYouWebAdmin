@@ -64,9 +64,9 @@ function getDotSize() {
 }
 
 function movePos(x,y) {
-	x = imgLocs['top'] + eval(x * imgLocs['ratio'])  - mapDotSize.height / 2;
-	y = imgLocs['left'] + eval(y * imgLocs['ratio'])  - mapDotSize.width / 2; 
-	$("#map_position").css({"top": x+"px" , "left": y+"px"});
+	x = imgLocs['left'] + eval(x * imgLocs['ratio'])  - mapDotSize.width / 2; 
+	y = imgLocs['top'] + eval(y * imgLocs['ratio'])  - mapDotSize.height / 2;
+	$("#map_position").css({"top": y+"px" , "left": x+"px"});
 }
 
 function startMoving(watchID,follow) {
