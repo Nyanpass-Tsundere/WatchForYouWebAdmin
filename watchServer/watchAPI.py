@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, request
-from watchDB import watchSession, watch
+from watchDB import watchSession, watch, navi, watchManager, block, zone
 
 
 import time, json
@@ -97,3 +97,90 @@ def upload_xy():
     
     return json.dumps(watch.sent(watchID,filename,[watchX,watchY,watchZ],watchScanned))
     
+@watchAPI.route('/getRoute',methods=['POST'])
+def getPATH():
+    ID = request.form.get('ID')
+    if ID == None:
+        return json.dumps([-1,"noID"])
+
+    fetch = json.loads(getBlock(ID))
+    if fetch[0] == 0:
+        loc = fetch[1]
+        cur_block = fetch[2]
+    
+    ## search for target zone
+    targetZoneMapID = request.form.get('tarMapID')
+    targetZoneName = request.form.get('tarName')
+    if ( targetZoneMapID == None or targetZoneName == None ):
+        return json.dumps([-3,"no spec target"])
+    targetZoneMapID = int(targetZoneMapID)
+
+    zoneData = zone.listZone(targetZoneMapID)
+    if ( zoneData[0] != 0 ):
+        return json.dumps([-4,"no target exist"])
+    zoneData = zoneData[1]
+
+    tarZone = False
+    for data in zoneData:
+        if data[0] == targetZoneName:
+            tarZone = data
+    
+    if tarZone == False:
+        return json.dumps([-4,"no target exist"])
+
+    ## if need elevator
+    if targetZoneMapID != loc[2] :
+        return json.dumps([-10,'need elevator'])
+
+    ## end(door) block
+    if tarZone[2] == None:
+        ## Zone no Map Set
+        LT = eval(tarZone[3])
+        RB = eval(tarZone[4])
+        center = [ (LT[0]+RB[0])/2 , (LT[1]+RB[1])/2   ]
+        door = block.inBlock(targetZoneMapID,center[0],center[1]) 
+    else:
+        door = eval(tarZone[2])
+
+    navi.go(int(loc[2]),cur_block,door)
+    route = navi.getShortest()
+    if route == None:
+        return json.dumps([-5,"no route exist"])
+
+    route_det = []
+    for idx, step in enumerate(route):
+        if step == door:
+            route_det.append([step,'FINISH'])
+        else:
+            step_detail = [ route[idx+1][0] - step[0] , route[idx+1][1] - step[1] ]
+            if ( step_detail == [0,-1] ) :
+                route_det.append([step,'UP'])
+            elif ( step_detail == [0,1] ) :
+                route_det.append([step,'DOWN'])
+            elif ( step_detail == [-1,0] ) :
+                route_det.append([step,'LEFT'])
+            elif ( step_detail == [1,0] ) :
+                route_det.append([step,'RIGHT'])
+            else:
+                route_det.append([step,'routing'])
+
+    return json.dumps([0,route_det])
+
+@watchAPI.route('/getRouteBlock',methods=['POST'])
+def getBlock(ID = None):
+    if ID == None:
+        ID = request.form.get('ID')
+    if ID == None:
+        return json.dumps([-1,"noID"])
+
+    loc = watchManager.getPos(ID,1)
+    if loc == []:
+        return json.dumps([-2,"can not find your location"])
+    loc = loc[0][1]
+    loc[0] = float(loc[0])
+    loc[1] = float(loc[1])
+    loc[2] = int(loc[2])
+
+    cur_block = block.inBlock(loc[2],loc[0],loc[1])
+
+    return json.dumps([0,loc,cur_block])

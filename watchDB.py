@@ -313,7 +313,8 @@ class block:
         perY = area['size'][1] / area['block'][1]
         blockY = block.floor(y / perY) 
 
-        return [perX,perY,blockX,blockY]
+        #return [perX,perY,blockX,blockY]
+        return [blockX,blockY]
 
     def getBlockPos(areaID,x,y):
         area = block.areas[areaID]
