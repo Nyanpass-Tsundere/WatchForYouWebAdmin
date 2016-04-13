@@ -117,12 +117,23 @@ class watch:
         try :
             mkdir( watchDir )
 
+            if watch.naming(watchID,Name)[0] == 0:
+                return [0,Name,"register sucesfull"]
+            else:
+                return [-1,Name,"naming failed"]
+        except:
+            return [-1,Name,"register failed"]
+
+    def naming(watchID,Name):
+        watchDir = path.join(wDir,watchID)
+        try: 
             wFile = open( path.join(watchDir,watchNameFile), 'w' )
             wFile.writelines(Name)
             wFile.close()
-            return [0,Name,"register sucesfull"]
+            return [0,Name,'Naming Success']
         except:
-            return [-1,Name,"register failed"]
+            return [1,Name,'Naming Success']
+        
 
 class watchManager:
     from setting import t_format as timeFormat

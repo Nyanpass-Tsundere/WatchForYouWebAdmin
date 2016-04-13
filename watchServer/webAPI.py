@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, request
 import json
-from watchDB import watchManager, watchSession, zone
+from watchDB import watchManager, watchSession, zone, watch
 from setting import areas
 
 webAPI = Blueprint('webAPI', __name__,
@@ -56,9 +56,20 @@ def ActWatch(ID = None):
 
     return json.dumps(watchSession.new(ID,expTimeStr,zone))
 
+@webAPI.route('/watch/Name',methods=['POST'])
+def nameWatch():
+    ID = request.form.get('ID')
+    if ( ID == None ):
+        return json.dumps([-2,'no ID']),400
+
+    Name = request.form.get('Name')
+    if ( Name == None ):
+        return json.dumps([-2,'no Name']),400
+
+    return json.dumps(watch.naming(ID,Name))
+
 @webAPI.route('/watch/loc/<ID>')
 @webAPI.route('/watch/loc/<ID>/<NUMBER>')
-
 def locs(ID,NUMBER=1):
     return json.dumps(watchManager.getPos(ID,NUMBER))
 

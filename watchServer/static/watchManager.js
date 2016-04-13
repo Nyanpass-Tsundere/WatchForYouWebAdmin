@@ -12,6 +12,7 @@ $( document ).ready(function() {
 			imageOnlad();
 		});
 	});
+	prepareCNameForm();
 	readWatchs();
 });
 
@@ -39,8 +40,8 @@ function readWatchs() {
 		con_icon = '<i class="dropdown icon"></i>';
 		$.each( data, function( key, val ) {
 			con_menu = '<div class="menu">'+
-				'<a class="item" href=\"javascript: launchActForm('+key+')\">啟用</a>'+
-				'<a class="item">更名</a>'+
+				'<a class="item" href=\"javascript: launchActForm('+key+');\">啟用</a>'+
+				'<a class="item" href=\"javascript: launchCName('+key+');\">更名</a>'+
 				'</div>';
 			$( "<div/>", {
 				"class": "ui left pointing dropdown link item watch",
@@ -177,5 +178,49 @@ function formSuc() {
 
 function formFail() {
 	alert(resp.responseText)
+}
+
+function launchCName(watchNum) {
+	cur_watch = watchNum;
+
+	//Resets form input fields
+	$('#changeWatchNameForm').trigger("reset");
+	//Resets form error messages
+	$('#changeWatchNameForm .field.error').removeClass( "error" );
+	$('#changeWatchNameForm.error').removeClass( "error" );
+	$('#modalChangeName').modal('show');
+}
+
+function prepareCNameForm() {
+	var formSettings = {
+		fields: {
+			name: {
+				identifier : 'name',
+				rules: [{
+					type   : 'empty',
+					prompt : '請輸新的手錶名稱'
+				}]
+			},
+		},
+		onSuccess: formVal ,
+	}
+
+	$('#changeWatchNameForm').form(formSettings);
+}
+
+function formVal() {
+	$('.modal').modal('hide');
+	resp = $.ajax({ 
+		url: api_url + 'watch/Name',
+		method: 'POST', 
+		data: {
+			"ID": watchs[cur_watch]['ID'],
+			"Name": $( "#name" ).val(),
+		},
+	}).
+	done( formSuc ).
+	fail( formFail ).
+	always(function() {
+	});
 }
 

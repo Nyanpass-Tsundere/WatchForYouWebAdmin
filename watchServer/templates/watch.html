@@ -24,4 +24,33 @@
 	<img src="/static/maps/loading.png" class="ui centered image" id="floorMap">
 </div>
 
+<div class="ui basic large modal" id="modalChangeName">
+	<i class="close icon"></i>
+	<div class="header">更改手錶名稱</div>
+	<div class="ui form" id="changeWatchNameForm" >
+		<div class="content">
+			<div class="ui piled segment">	
+
+				<div class="field">
+					<label>新的手錶名稱</label><input type="text" id="name">
+				</div>
+				<div class="ui error message"></div>
+			</div>
+		</div>
+		<p></p>
+
+    	<div class="two fluid ui inverted buttons">
+    		<div class="ui cancel red basic inverted button cancel">
+				<i class="remove icon"></i>
+				取消
+			</div>
+			<div class="ui ok green basic inverted button submit">
+				<i class="checkmark icon"></i>
+				更改
+			</div>
+		</div>
+	</div>
+
+</div>
+
 {% endblock %}

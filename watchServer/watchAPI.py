@@ -142,6 +142,7 @@ def getPATH():
     else:
         door = eval(tarZone[2])
 
+    print([loc[2],cur_block,door])
     navi.go(int(loc[2]),cur_block,door)
     route = navi.getShortest()
     if route == None:
