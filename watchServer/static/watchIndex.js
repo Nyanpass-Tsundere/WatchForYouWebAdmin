@@ -64,12 +64,8 @@ function getDotSize() {
 }
 
 function movePos(x,y) {
-
-}
-
-function movePosPrec(x,y) {
-	x = imgLocs.top + imgLocs.height * x - mapDotSize.height / 2
-	y = imgLocs.left + imgLocs.width * y - mapDotSize.width / 2
+	x = imgLocs['top'] + eval(x * imgLocs['ratio'])  - mapDotSize.height / 2;
+	y = imgLocs['left'] + eval(y * imgLocs['ratio'])  - mapDotSize.width / 2; 
 	$("#map_position").css({"top": x+"px" , "left": y+"px"});
 }
 
@@ -83,14 +79,14 @@ function startMoving(watchID,follow) {
 function aMove(watchID,follow) {
 		$.getJSON( api_url+"watch/loc/"+watchID, function( data ) {
 			if ( data[0][1][2] == cur_map ) {
-				movePosPrec(data[0][1][0],data[0][1][1])
+				movePos(data[0][1][0],data[0][1][1])
 			}
 			else if ( data[0][1][2] != cur_map && follow ) {
 				setMap(data[0][1][2])
-				movePosPrec(data[0][1][0],data[0][1][1])
+				movePos(data[0][1][0],data[0][1][1])
 			}
 			else {
-				movePosPrec(1.1,1,1)
+				movePos(imgLocs.height,imgLocs.width+50)
 			}
 		})
 }
