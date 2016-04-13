@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, request
 import json
-from watchDB import watchManager, watchSession, zone, watch
+from watchDB import watchManager, watchSession, zone, watch, block
 from setting import areas
 
 webAPI = Blueprint('webAPI', __name__,
@@ -43,18 +43,14 @@ def ActWatch(ID = None):
     if ( hour == None ):
         return json.dumps([-2,'no Hour']),400
 
-    zone = request.form.get('zone')
-    if ( zone == None ):
+    zoneName = request.form.get('zone')
+    if ( zoneName == None ):
         return json.dumps([-2,'no zone']),400
-
-    print(zone)
-    print(json.loads(zone))
-    print(json.dumps(json.loads(zone)))
 
     expTime = datetime.now() + timedelta(hours=int(hour))
     expTimeStr = format(expTime, t_format)
 
-    return json.dumps(watchSession.new(ID,expTimeStr,zone))
+    return json.dumps(watchSession.new(ID,expTimeStr,zoneName))
 
 @webAPI.route('/watch/Name',methods=['POST'])
 def nameWatch():
@@ -133,3 +129,6 @@ def delZone():
     else:
         return json.dumps(dbOP), 500
 
+@webAPI.route('/block/size/<MapID>')
+def blockSize(MapID):
+    return json.dumps(block.oneBlockSize(int(MapID)))

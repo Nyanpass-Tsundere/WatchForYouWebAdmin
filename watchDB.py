@@ -309,19 +309,33 @@ class zone:
 class block:
     from setting import areas
     from math import floor
+    
+    def oneBlockSize(areaID):
+        area = block.areas[areaID]
+        try:
+            perX = area['size'][0] / area['block'][0]
+            perY = area['size'][1] / area['block'][1]
+        except:
+            return [-1,'no block or size info for Map']
+
+        return [0,perX,perY]
+        
+
     def inBlock(areaID,x,y):
         area = block.areas[areaID]
+
+        res=block.oneBlockSize(areaID)
+        if res[0] == 0:
+            perX = res[1]
+            perY = res[2]
+        else:
+            return res
 
         ## check input
         if x > area['size'][0] or y > area['size'][1] :
             return 'out of range'
 
-        ## process X
-        perX = area['size'][0] / area['block'][0]
         blockX = block.floor(x / perX) 
-
-        ## process Y
-        perY = area['size'][1] / area['block'][1]
         blockY = block.floor(y / perY) 
 
         #return [perX,perY,blockX,blockY]
@@ -337,9 +351,6 @@ class block:
         RB = [ perX * ( x+1 ) , perY * ( y+1 ) ]
 
         return [LT,RB]
-
-    def getBlockRange(areaID):
-        return  block.areas[areaID]['block']
 
 class navi:
     from setting import blockMap
