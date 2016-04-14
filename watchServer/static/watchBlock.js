@@ -37,9 +37,9 @@ function genBlocks() {
 }
 
 function initBlockInfo(x_num,y_num) {
-	for (var x=0; x<x_num; x++) {
+	for (var y=0; y<y_num; y++) {
 		var line = [];
-		for (var y=0; y<y_num; y++) {
+		for (var x=0; x<x_num; x++) {
 			line.push(0);
 		}
 		blockInfo.push(line);
@@ -70,12 +70,12 @@ function writeBlockDiv(x,y) {
 }
 
 function setBlock(x,y) {
-	if (blockInfo[x][y] == 0) {
-		blockInfo[x][y] = 1;
+	if (blockInfo[y][x] == 0) {
+		blockInfo[y][x] = 1;
 		$( "#block-"+x+"-"+y ).addClass("road");
 	}
 	else {
-		blockInfo[x][y] = 0;
+		blockInfo[y][x] = 0;
 		$( "#block-"+x+"-"+y ).removeClass("road");
 	}
 }
