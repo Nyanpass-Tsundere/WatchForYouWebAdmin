@@ -35,11 +35,16 @@ def regWatch(ID=None):
 
 @watchAPI.route('/upload',methods=['POST'])
 def upload():
+    from position import resLocate
+    from operator import itemgetter
+    from setting import beaconsMap
+    
     watchID=""
     watchScanned=""
 
     watchID=request.form.get('ID')
     beacons=request.form.get('Beacons')
+    moving=request.form.get('Move')
 
     try:
         fullBeacons = []
@@ -66,8 +71,54 @@ def upload():
     else :
         filename = session[2]
     ##filename=time.strftime("%Y-%m-%d_%H%M%S")+".txt"
-    
-    return json.dumps(watch.sent(watchID,filename,[0.5,0.5,1],json.dumps(fullBeacons)))
+
+    ## convert RSSI to value that can react distance ratio
+    ## ref: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing/20434019#20434019
+    for beacon in fullBeacons:
+        ratio = beacon['rssi'] / beacon['measuredPower']
+        #if ( ratio < 1.0 ):
+        #    beacon['DIST'] = pow(ratio,10);
+        #else:
+        #    beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        ## lookup beacon locates
+        beacon['MapID'] = beaconsMap[beacon['macAddress']][0]
+        beacon['Locate'] = beaconsMap[beacon['macAddress']][1]
+        
+
+    orderBeacons = sorted(fullBeacons,key=itemgetter('DIST'))
+
+    ## find user's MapID
+    MapID = orderBeacons[0]['MapID']
+
+    ## kick beacons not in same MapID
+    for idx,val in enumerate(orderBeacons):
+        if ( val['MapID'] != MapID ):
+            orderBeacons.pop(idx)
+
+    ## prepare data
+    beaconLocs = []
+    beaconDist = []
+    noEnoughtBeacons = False
+    for i in [0,1,2]:
+        try:
+            beaconDist.append(orderBeacons[i]['DIST'])
+            beaconLocs.append(orderBeacons[i]['Locate'])
+        except:
+            noEnoughtBeacons = True
+            break
+    if (noEnoughtBeacons == True):
+        locate = [-1,-1,MapID]
+    else:
+        print(beaconLocs)
+        print(beaconDist)
+        res = resLocate(beaconLocs,beaconDist)
+        if res == None:
+            locate = [-2,-2,MapID]
+        else:
+            locate = [res[0][0],res[0][1],MapID]
+
+    return json.dumps(watch.sent(watchID,filename,locate,json.dumps(fullBeacons),moving))
     
 @watchAPI.route('/upload_xyz',methods=['POST'])
 def upload_xy():

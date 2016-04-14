@@ -23,7 +23,7 @@ def checkenvir():
                     print('Please enter root password !')
                     # call subprocess to install unfound modules
                     subprocess.call(['sudo pypy3 -m pip install Flask'], shell=True)
-                    subprocess.call(['sudo pypy3 -m pip install six'], shell=True)
+                    subprocess.call(['sudo pypy3 -m pip install sympy'], shell=True)
                 except ImportError:
                     print('You dont have pip install , please input your password to install ')
                     subprocess.call(['curl -s https://bootstrap.pypa.io/get-pip.py |sudo pypy3'], shell=True)
@@ -36,7 +36,7 @@ def checkenvir():
                 print('You dont have flask install , please input your password to install flask . ')
                 # call subprocess to install unfound modules
                 subprocess.call(['sudo python3 -m pip install Flask'], shell=True)
-                subprocess.call(['sudo python3 -m pip install six'], shell=True)
+                subprocess.call(['sudo python3 -m pip install sympy'], shell=True)
                 return 'python3'
     else:
         return 'python2'

@@ -75,8 +75,8 @@ class watchSession:
 
 class watch:
     noSessionFile = 'notInSession'
-    def sent(watchID,watchSessionkey,watchLoc,watchBS):
-            logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS]
+    def sent(watchID,watchSessionkey,watchLoc,watchBS,moving):
+            logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS,moving]
             
             try:
                 watchManager.getName(watchID)
