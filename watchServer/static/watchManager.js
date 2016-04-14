@@ -6,12 +6,14 @@ var resp
 $( document ).ready(function() {
 	getMaps().done(function() {
 		setMap(0);
-		getImageInfo();
 		readAllZone();
 		$( "#floorMap" ).load(function() {
+			getImageInfo();
 			imageOnlad();
 		});
+		startScaleZone();
 	});
+	startLoadImageInfo();
 	prepareCNameForm();
 	readWatchs();
 });
