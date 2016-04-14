@@ -48,16 +48,31 @@
 #newZoneBTN{
 	width: 100%;
 }
+.zone{
+	position: absolute;
+}
 
 .zoneArea{
-	position: absolute;
 	background-color: rgba(255,255,0,0.5);
 	/*z-index: 20;*/
 }
+
 .zoneAreaText {
 	background: rgba(255,255,255,0.8);
 	display: table;
 }
+
+.block {
+	border: 1px #000000 solid;
+}
+
+.block.road {
+	background-color: rgba(255,255,0,0.5);
+}
+
+.blockAreaText {
+}
+
 
 /**   美化UI   **/
 body {

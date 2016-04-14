@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, request
 import json
 from watchDB import watchManager, watchSession, zone, watch
-from setting import areas
+from setting import areas, blockMap
 
 webAPI = Blueprint('webAPI', __name__,
                         template_folder='templates')
@@ -129,3 +129,6 @@ def delZone():
     else:
         return json.dumps(dbOP), 500
 
+@webAPI.route('/block/<MapID>')
+def getblockMap(MapID):
+    return json.dumps(blockMap[int(MapID)])

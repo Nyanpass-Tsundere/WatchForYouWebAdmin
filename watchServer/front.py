@@ -19,3 +19,7 @@ def login():
 @front.route('/watch')
 def watch():
     return render_template('watch.html')
+
+@front.route('/block')
+def block():
+    return render_template('block.html')
