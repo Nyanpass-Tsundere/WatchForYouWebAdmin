@@ -51,7 +51,7 @@ function writeBlockDiv(x,y) {
 		initBlockInfo(x,y)
 	}
 	a = function(x,y) {
-		if (blockInfo[x][y]==1) {
+		if (blockInfo[y][x]==1) {
 			divClass = 'road'
 		}
 		else {
