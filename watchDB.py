@@ -75,7 +75,7 @@ class watchSession:
 
 class watch:
     noSessionFile = 'notInSession'
-    def sent(watchID,watchSessionkey,watchLoc,watchBS,moving):
+    def sent(watchID,watchSessionkey,watchLoc,watchBS,moving = None):
             logdata = [strftime('%Y-%m-%d_%H%M%S'),watchLoc,watchBS,moving]
             
             try:
