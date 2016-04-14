@@ -36,8 +36,20 @@ function genBlocks() {
 	}
 }
 
+function initBlockInfo(x_num,y_num) {
+	for (var x=0; x<x_num; x++) {
+		var line = [];
+		for (var y=0; y<y_num; y++) {
+			line.push(0);
+		}
+		blockInfo.push(line);
+	}
+}
+
 function writeBlockDiv(x,y) {
-	console.log(x,y,blockInfo[0][0]);
+	if (blockInfo[x] === undefined) {
+		initBlockInfo(x,y)
+	}
 	a = function(x,y) {
 		if (blockInfo[x][y]==1) {
 			divClass = 'road'
@@ -50,8 +62,26 @@ function writeBlockDiv(x,y) {
 			"id": "block-"+x+"-"+y,
 			html: "<div class=\"zoneAreaText blockAreaText\">"+x+","+y+"</div>"
 		}).appendTo( "#map" );
+		$( "#block-"+x+"-"+y ).click(function() {
+			setBlock(x,y);
+		});
 	}
 	blockFor(x,y,a)
+}
+
+function setBlock(x,y) {
+	if (blockInfo[x][y] == 0) {
+		blockInfo[x][y] = 1;
+		$( "#block-"+x+"-"+y ).addClass("road");
+	}
+	else {
+		blockInfo[x][y] = 0;
+		$( "#block-"+x+"-"+y ).removeClass("road");
+	}
+}
+
+function genCurBlockSetting() {
+	console.log(JSON.stringify(blockInfo));
 }
 
 function scaleBlockDiv(x,y) {
