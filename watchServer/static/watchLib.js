@@ -99,9 +99,9 @@ function writeZoneToMap(key,val) {
 
 function scaleZone(key,val) {
 	getImageInfo();
-	y = imgLocs['left'] + eval(val[3])[0] * imgLocs['ratio'];
-	x = imgLocs['top'] + eval(val[3])[1] * imgLocs['ratio'];
+	x = imgLocs['left'] + eval(val[3])[0] * imgLocs['ratio'];
+	y = imgLocs['top'] + eval(val[3])[1] * imgLocs['ratio'];
 	width = ( eval(val[4])[0] - eval(val[3])[0] ) * imgLocs['ratio'] ;
 	height = ( eval(val[4])[1] - eval(val[3])[1] ) * imgLocs['ratio'] ;
-	$("#zone-"+key).css({"top": x+"px" , "left": y+"px", "width": width+"px", "height": height+"px"});
+	$("#zone-"+key).css({"top": y+"px" , "left": x+"px", "width": width+"px", "height": height+"px"});
 }

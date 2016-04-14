@@ -86,7 +86,7 @@ function aMove(watchID,follow) {
 				movePos(data[0][1][0],data[0][1][1])
 			}
 			else {
-				movePos(imgLocs.height,imgLocs.width+50)
+				movePos(maps[cur_map].size[0],maps[cur_map].size[1]+50)
 			}
 		})
 }
