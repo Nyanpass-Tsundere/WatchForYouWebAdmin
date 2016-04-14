@@ -15,6 +15,7 @@ def checkenvir():
         if is_pypy is True:
             try:
                 import flask
+                import sympy
                 return 'pypy3'
             except ImportError:
                 try:
@@ -31,6 +32,7 @@ def checkenvir():
         else:
             try:
                 import flask  # NOQA
+                import sympy  # NOQA
                 return 'python3'
             except ImportError:
                 print('You dont have flask install , please input your password to install flask . ')
