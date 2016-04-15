@@ -110,13 +110,15 @@ def upload():
     if (noEnoughtBeacons == True):
         locate = [-1,-1,MapID]
     else:
+        beaconLocs = [[132, 211], [522, 362], [542, 76]]
+        beaconDist = [2.669345479953698, 4.892709604429419, 12.368633446078936]
         print(beaconLocs)
         print(beaconDist)
         res = resLocate(beaconLocs,beaconDist)
         if res == None:
             locate = [-2,-2,MapID]
         else:
-            locate = [res[0][0],res[0][1],MapID]
+            locate = [float(res[0][0]),float(res[0][1]),MapID]
 
     return json.dumps(watch.sent(watchID,filename,locate,json.dumps(fullBeacons),moving))
     
