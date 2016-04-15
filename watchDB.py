@@ -31,7 +31,7 @@ class watchSession:
         watchSession.clean(watchID)
 
         ## Generator Session
-        sKey = strftime(watchSession.timeFormat)
+        sKey = strftime(watchSession.timeFormat) + "-session" + "-" + watchID
         sData = [watchID,sKey,expireTime,permission]
 
         sFile = open(path.join(wDir,watchSession.filename) , 'a' )
@@ -51,6 +51,17 @@ class watchSession:
 
         sFile.close()
         return False
+
+    def list():
+        sFile = open(path.join(wDir,watchSession.filename) , 'r' )
+        
+        allSession = []
+        for line in sFile:
+            content = json.loads(line)
+            allSession.append(content)
+
+        return allSession
+
 
     def clean(watchID = None):
         try:
