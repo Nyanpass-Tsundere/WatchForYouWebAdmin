@@ -132,3 +132,31 @@ def delZone():
 @webAPI.route('/block/<MapID>')
 def getblockMap(MapID):
     return json.dumps(blockMap[int(MapID)])
+
+@webAPI.route('/alert/new')
+def getNewAlert():
+    from tail import tail
+    from setting import alert_log, t_format
+    from datetime import datetime, timedelta
+
+    alertLog = tail(alert_log,30)
+
+    nearTime = datetime.now() + timedelta(minutes=30)
+    nearTimeStr = format(nearTime, t_format)
+    print(nearTimeStr)
+
+    nearAlert = []
+    for alert in alertLog:
+        if alert[0] > nearTimeStr:
+            nearAlert.append(alert)
+
+
+    return json.dumps(nearAlert)
+
+@webAPI.route('/alert/<num>')
+def getAlert(num):
+    from tail import tail
+    from setting import alert_log
+
+    alertLog = tail(alert_log,num)
+    return json.dumps(alertLog)
