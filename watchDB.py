@@ -155,8 +155,6 @@ class watchManager:
         return wFile.readline().split("\r")[0]
 
     def getPos(watchID,line = 1):
-        import subprocess 
-        from io import BytesIO
         session = watch.fetch(watchID)
         if session[0] == 0:
             filename = watch.noSessionFile
@@ -164,23 +162,9 @@ class watchManager:
             filename = session[2]
 
         logFile = path.join(wDir,watchID,filename+watchManager.logEXT)
-
-        lFile = open(logFile,'a')
-        lFile.close()
         
-        ## for python 3.5
-        #process = subprocess.run(['tail',logFile,'-n '+str(int(line))],stdout=subprocess.PIPE)
-        #buf = BytesIO(process.stdout)
-
-        ## for python 3.2
-        buf = BytesIO( subprocess.check_output(['tail',logFile,'-n '+str(int(line))]) )
-        data = []
-        for line in buf.readlines():
-            loadline = json.loads(line.decode())
-            data.append(  [loadline[0],loadline[1]] )
-
-        return data
-
+        from tail import tail
+        return tail(logFile,line)
 
     def listDir(tDir):
         return [ name for name in listdir(tDir) if path.isdir(path.join(tDir, name)) ]
