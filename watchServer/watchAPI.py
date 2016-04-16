@@ -96,7 +96,7 @@ def upload():
 
     ## kick beacons not in same MapID
     for idx,val in enumerate(orderBeacons):
-        if ( val['MapID'] != MapID  or vsl['MapID'] == -1 ):
+        if ( val['MapID'] != MapID  or val['MapID'] == -1 ):
             orderBeacons.pop(idx)
 
     ## prepare data
