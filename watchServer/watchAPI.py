@@ -82,9 +82,12 @@ def upload():
         #    beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
         beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
         ## lookup beacon locates
-        beacon['MapID'] = beaconsMap[beacon['macAddress']][0]
-        beacon['Locate'] = beaconsMap[beacon['macAddress']][1]
-        
+        try:
+            beacon['MapID'] = beaconsMap[beacon['macAddress']][0]
+            beacon['Locate'] = beaconsMap[beacon['macAddress']][1]
+        except:
+            beacon['MapID'] = -1
+            beacon['Locate'] = ''
 
     orderBeacons = sorted(fullBeacons,key=itemgetter('DIST'))
 
@@ -93,7 +96,7 @@ def upload():
 
     ## kick beacons not in same MapID
     for idx,val in enumerate(orderBeacons):
-        if ( val['MapID'] != MapID ):
+        if ( val['MapID'] != MapID  or vsl['MapID'] == -1 ):
             orderBeacons.pop(idx)
 
     ## prepare data
@@ -110,8 +113,6 @@ def upload():
     if (noEnoughtBeacons == True):
         locate = [-1,-1,MapID]
     else:
-        beaconLocs = [[132, 211], [522, 362], [542, 76]]
-        beaconDist = [2.669345479953698, 4.892709604429419, 12.368633446078936]
         print(beaconLocs)
         print(beaconDist)
         res = resLocate(beaconLocs,beaconDist)
