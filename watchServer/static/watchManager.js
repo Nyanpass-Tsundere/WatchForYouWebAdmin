@@ -208,6 +208,9 @@ function prepareCNameForm() {
 	}
 
 	$('#changeWatchNameForm').form(formSettings);
+	$(".button.cancel").click(function() {
+		$('#modalChangeName').modal('hide');
+	});
 }
 
 function formVal() {
