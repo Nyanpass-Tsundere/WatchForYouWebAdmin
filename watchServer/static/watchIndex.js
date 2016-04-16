@@ -2,6 +2,8 @@
 var watchs;
 var cur_watch = 0;
 var mapDotSize = {height: 0, width: 0};
+var alertData=[];
+var resp;
 
 //Webpage Init
 $( document ).ready(function() {
@@ -96,3 +98,55 @@ function stopMoving() {
 		clearInterval(refreshcon);
 	}catch(err){}
 }
+
+function startFetchAlert(watchID,follow) {
+	refreshAlert = setInterval(function() {
+		$.getJSON( api_url+"alert/new", function( data ) {
+			if ( JSON.stringify(alertData) != JSON.stringify(data) ){
+				alertData = data;
+				showAlert(data);
+			}
+		});
+	}, 3000);
+}
+
+function showAlert(data) {
+	$( "#irruptWarning > .content , .actions" ).remove();
+	$.each(data, function(key,val) {
+		console.log(val);
+		if ( val[1]==0 ) {
+			warnLevel = 'Error';
+			Title = '入侵警告';
+		}
+		else {
+			warnLevel = 'Info';
+			Title = '一般通知';
+		}
+		$( "<div/>", {
+			"id": "warn-"+key,
+			"class": "content warn "+warnLevel,
+		}).appendTo( "#irruptWarning" );
+		$( "<h2/>", {
+			html: Title,
+		}).appendTo( "#warn-"+key );
+		
+		if (val[3][1] == 1) {
+			areaNotice = '(強制警示區)';
+		}
+		else {
+			areaNotice = '';
+		}
+		$( "<p/>", {
+			"class": "warnTime",
+			html: "時間："+val[0]+"<br>"+"手錶："+val[2]+"<br>"+"入侵區域："+val[3][0]+areaNotice,
+		}).appendTo( "#warn-"+key );
+
+	});
+	$( "<div/>", {
+		"class": "actions",
+		html: '<div class="ui approve button">確認警報</div>',
+	}).appendTo( "#irruptWarning" );
+	$("#irruptWarning").modal('show');
+	
+}
+

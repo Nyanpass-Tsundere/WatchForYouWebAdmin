@@ -1,7 +1,7 @@
 from io import BytesIO
 import subprocess 
 import json
-def tail(logFile,line):
+def tail(logFile,line,field=[0,1]):
     lFile = open(logFile,'a')
     lFile.close()
     
@@ -14,6 +14,10 @@ def tail(logFile,line):
     data = []
     for line in buf.readlines():
         loadline = json.loads(line.decode())
-        data.append(  [loadline[0],loadline[1]] )
+        returnLine = []
+        for i in field:
+            returnLine.append(loadline[i])
+
+        data.append( returnLine )
 
     return data

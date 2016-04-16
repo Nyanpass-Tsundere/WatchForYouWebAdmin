@@ -158,5 +158,5 @@ def getAlert(num):
     from tail import tail
     from setting import alert_log
 
-    alertLog = tail(alert_log,num)
+    alertLog = tail(alert_log,num,[0,1,2,3])
     return json.dumps(alertLog)
