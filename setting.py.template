@@ -4,7 +4,7 @@
 # 此為設定的樣板檔，請依照下面的註解進行自己的設定檔製作
 # 設定檔檔案名稱為，setting.py 請自行複製樣板檔製作
 
-# Only for 0MuServer / 0muMDAU
+# Only for WatchForYou Server
 
 # Server Setting
 host = "127.0.0.1"
@@ -13,7 +13,7 @@ port = 8509
 # Debug Mode , 0 = off , 1 = on
 debug = 0
 
-# Key
+# session key
 yourkey = ''
 
 # database location
@@ -31,15 +31,19 @@ z_loc = db_loc+'zone.db'
 # alert logs Filename
 alert_log = db_loc+'alert.log'
 
+# qr-code path(need setting at nginx)
+qr_local_path = db_loc+'qr/'
+qr_web_path = '/api_watch/qr/'
+
 # Timeformat 
-t_format = '%Y-%m-%d_%H%M'
+t_format = '%Y-%m-%d_%H%M%S'
 
 # Areas
 areas = [
         {'name': '2F', 'map': '/static/maps/2.png', 'size': [878,464], 'block': [5,5]},
-        {'name': '3F', 'map': '/static/maps/3.png'},
-        {'name': '4F', 'map': '/static/maps/4.png'},
-        {'name': 'LAB', 'map': '/static/maps/LAB.png'}
+        {'name': '3F', 'map': '/static/maps/3.png', 'size': [878,464], 'block': [5,5]},
+        {'name': '4F', 'map': '/static/maps/4.png', 'size': [878,464], 'block': [12,7]},
+        {'name': 'LAB', 'map': '/static/maps/LAB.png', 'size': [578,410]}
         ]
 
 blockMap = [
@@ -50,13 +54,12 @@ blockMap = [
             [1,1,1,1,0],
             [0,1,1,1,0]
             ],
-
-        [
-            ],
-
-        [
-            ],
-
-        [
-            ]
+        [],
+        [],
+        []
         ]
+
+beaconsMap = { '98:7B:F3:95:4B:97': [3,[542,76]],
+        '98:7B:F3:95:21:6C': [3,[522,362]],
+        '98:7B:F3:94:D6:F0': [3,[132,211]]
+        }

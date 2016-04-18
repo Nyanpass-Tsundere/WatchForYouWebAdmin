@@ -23,6 +23,8 @@ class watchSession:
             return True
 
     def new(watchID,expireTime,permission = None ):
+        import pyqrcode
+        from setting import qr_local_path as qrPath
         ## init watch dir if not exist
         ## just convient for debug
         watchSession.chkWatchDir(watchID)
@@ -37,6 +39,12 @@ class watchSession:
         sFile = open(path.join(wDir,watchSession.filename) , 'a' )
         sFile.writelines(json.dumps(sData)+ "\n")
         sFile.close()
+
+        if ( not path.exists(qrPath) ):
+            mkdir(qrPath)
+
+        url = pyqrcode.create(sKey)
+        url.png(path.join(qrPath,sKey+'.png'), scale=8, module_color=[0, 0, 0, 255], background=[0xff, 0xff, 0xff])
 
         return [0,sKey,'sucessful generate session key']
     
@@ -64,6 +72,8 @@ class watchSession:
 
 
     def clean(watchID = None):
+        from setting import qr_local_path as qrPath
+        from os import remove
         try:
             sFile = open(path.join(wDir,watchSession.filename), 'r')
             data = sFile.readlines()
@@ -78,6 +88,10 @@ class watchSession:
                     else:
                         if not watchID == json.loads(dataLine)[0]:
                             sFile.write(dataLine)
+                else:
+                    remove(qrPath+json.loads(dataLine)[1]+'.png')
+
+
             sFile.close()
             return True
         except:
@@ -105,10 +119,12 @@ class watch:
                 return [0,"Updated, but Session already End"]
 
     def fetch(watchID):
+        from setting import qr_web_path as qrPath
         if not watchSession.chkWatchDir(watchID):
             return [-1,"noname",'',"not register"]
         try:
             sFile = open(path.join(wDir,watchSession.filename) , 'r' )
+            watchSession.clean(watchID)
         except:
             sFile = open(path.join(wDir,watchSession.filename) , 'a' )
 
@@ -118,7 +134,7 @@ class watch:
             content = json.loads(line)
             if content[0] == watchID:
                 sFile.close()
-                return [1,name,content[1],"a session to fetch"]
+                return [1,name,qrPath+content[1]+'.png',"a session to fetch"]
             
         sFile.close()
         return [0,name,'',"nothing to fetch"]
