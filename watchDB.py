@@ -118,7 +118,7 @@ class watch:
             else:
                 return [0,"Updated, but Session already End"]
 
-    def fetch(watchID):
+    def fetch(watchID,forWatch = None):
         from setting import qr_web_path as qrPath
         if not watchSession.chkWatchDir(watchID):
             return [-1,"noname",'',"not register"]
@@ -133,7 +133,10 @@ class watch:
             content = json.loads(line)
             if content[0] == watchID:
                 sFile.close()
-                return [1,name,qrPath+content[1]+'.png',"a session to fetch"]
+                if ( forWatch == True ):
+                    return [1,name,qrPath+content[1]+'.png',"a session to fetch"]
+                else:
+                    return [1,name,content[1],"a session to fetch"]
             
         sFile.close()
         return [0,name,'',"nothing to fetch"]

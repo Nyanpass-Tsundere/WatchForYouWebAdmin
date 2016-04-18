@@ -21,7 +21,7 @@ def fetchID(ID=None):
         ID=request.form.get('ID')
     if ID == None:
         return json.dumps([-2,'no ID'])
-    return json.dumps(watch.fetch(ID));
+    return json.dumps(watch.fetch(ID,forWatch = True));
 
 @watchAPI.route('/reg/<ID>')
 @watchAPI.route('/reg',methods=['POST'])
