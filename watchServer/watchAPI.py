@@ -103,7 +103,7 @@ def upload():
     beaconLocs = []
     beaconDist = []
     noEnoughtBeacons = False
-    for i in [0,1,2]:
+    for i in [0]:
         try:
             beaconDist.append(orderBeacons[i]['DIST'])
             beaconLocs.append(orderBeacons[i]['Locate'])
