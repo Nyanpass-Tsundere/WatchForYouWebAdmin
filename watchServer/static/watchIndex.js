@@ -17,6 +17,7 @@ $( document ).ready(function() {
 			aMove(watchs[cur_watch]['ID'],false)
 		});
 	});
+	startFetchAlert();
 	getDotSize();
 	startLoadImageInfo();
 });
@@ -99,7 +100,7 @@ function stopMoving() {
 	}catch(err){}
 }
 
-function startFetchAlert(watchID,follow) {
+function startFetchAlert() {
 	refreshAlert = setInterval(function() {
 		$.getJSON( api_url+"alert/new", function( data ) {
 			if ( JSON.stringify(alertData) != JSON.stringify(data) ){
