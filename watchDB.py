@@ -124,7 +124,6 @@ class watch:
             return [-1,"noname",'',"not register"]
         try:
             sFile = open(path.join(wDir,watchSession.filename) , 'r' )
-            watchSession.clean(watchID)
         except:
             sFile = open(path.join(wDir,watchSession.filename) , 'a' )
 
