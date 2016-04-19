@@ -43,7 +43,7 @@ class watchSession:
         if ( not path.exists(qrPath) ):
             mkdir(qrPath)
 
-        url = pyqrcode.create(sKey)
+        url = pyqrcode.create(sKey,error='L')
         url.png(path.join(qrPath,sKey+'.png'), scale=8, module_color=[0, 0, 0, 255], background=[0xff, 0xff, 0xff])
 
         return [0,sKey,'sucessful generate session key']
@@ -372,7 +372,13 @@ class navi:
 
     def go(areaID, start, end):
         maze = navi.blockMap[areaID]
-        navi.visit(maze, start, end)
+        newMaze = []
+        for idx1,val1 in enumerate(maze[0]):
+            line = []
+            for idx2,val2 in enumerate(maze):
+                line.append(maze[idx2][idx1])
+            newMaze.append(line)
+        navi.visit(newMaze, start, end)
     
     def visit(maze, pt, end, route = None):
         if route == None:
