@@ -369,51 +369,55 @@ class block:
 class navi:
     from setting import blockMap
     findRoutes = []
+    def __init__(self):
+        self.findRoutes = []
 
-    def go(areaID, start, end):
-        maze = navi.blockMap[areaID]
+    def go(self,areaID, start, end):
+        maze = self.blockMap[areaID]
         newMaze = []
         for idx1,val1 in enumerate(maze[0]):
             line = []
             for idx2,val2 in enumerate(maze):
                 line.append(maze[idx2][idx1])
             newMaze.append(line)
-        navi.visit(newMaze, start, end)
+        self.visit(newMaze, start, end)
     
-    def visit(maze, pt, end, route = None):
+    def visit(self,maze, pt, end, route = None):
         if route == None:
             route = []
 
-        if navi.isVisitable(maze, pt, route):
+        if self.isVisitable(maze, pt, route):
             route.append(pt)
-            if navi.isEnd(route, end):
-                navi.addRoute(route)
+            if self.isEnd(route, end):
+                self.addRoute(route)
             else:
-                navi.visit(maze, [pt[0], pt[1] + 1], end, route)
-                navi.visit(maze, [pt[0] + 1, pt[1]], end, route)
-                navi.visit(maze, [pt[0], pt[1] - 1], end, route)
-                navi.visit(maze, [pt[0] - 1, pt[1]], end, route)
+                self.visit(maze, [pt[0], pt[1] + 1], end, route)
+                self.visit(maze, [pt[0] + 1, pt[1]], end, route)
+                self.visit(maze, [pt[0], pt[1] - 1], end, route)
+                self.visit(maze, [pt[0] - 1, pt[1]], end, route)
             route.pop()
     
-    def isVisitable(maze, pt, route):
+    def isVisitable(self,maze, pt, route):
         try:
             return maze[pt[0]][pt[1]] == 1 and pt not in route
         except:
             return False
         
-    def isEnd(route, end):
-            return end in route
+    def isEnd(self,route, end):
+        return end in route
 
-    def addRoute(route):
-        navi.findRoutes.append(eval(str(route)))
+    def addRoute(self,route):
+        print(route)
+        self.findRoutes.append(eval(str(route)))
         return True
 
-    def getShortest():
+    def getShortest(self):
         bestRoute = None
         bestRouting = 0
-        for route in navi.findRoutes:
+        for route in self.findRoutes:
             if bestRoute == None or len(route) < bestRouting:
                 bestRoute = route
                 bestRouting = len(route)
+        print(bestRoute)
         return bestRoute
 

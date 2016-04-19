@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, request
-from watchDB import watchSession, watch, navi, watchManager, block, zone
+from watchDB import watchSession, watch, watchManager, block, zone
 
 
 import time, json
@@ -153,6 +153,9 @@ def upload_xy():
     
 @watchAPI.route('/getRoute',methods=['POST'])
 def getPATH():
+    from watchDB import navi
+    a = navi()
+
     ID = request.form.get('ID')
     if ID == None:
         return json.dumps([-1,"noID"])
@@ -197,8 +200,8 @@ def getPATH():
         door = eval(tarZone[2])
 
     print([loc[2],cur_block,door])
-    navi.go(int(loc[2]),cur_block,door)
-    route = navi.getShortest()
+    a.go(int(loc[2]),cur_block,door)
+    route = a.getShortest()
     if route == None:
         return json.dumps([-5,"no route exist"])
 
