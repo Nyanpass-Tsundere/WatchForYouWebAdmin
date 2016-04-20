@@ -48,16 +48,7 @@ function setWatch(watchID) {
 	$("#watch-"+watchID).addClass("active");
 	cur_watch = watchID;
 	startMoving(watchs[watchID]['ID'],1)
-}
-
-function setWatch(watchID) {
-	if ( cur_watch >= 0 ) {
-		$("#watch-"+cur_watch).removeClass("active");
-		stopMoving()
-	}
-	$("#watch-"+watchID).addClass("active");
-	cur_watch = watchID;
-	startMoving(watchs[watchID]['ID'],1)
+	movePos(maps[cur_map].size[0],maps[cur_map].size[1]+50)
 }
 
 // functions for the moving DOT
@@ -103,6 +94,7 @@ function stopMoving() {
 function startFetchAlert() {
 	refreshAlert = setInterval(function() {
 		$.getJSON( api_url+"alert/new", function( data ) {
+			console.log(JSON.stringify(alertData));
 			if ( JSON.stringify(alertData) != JSON.stringify(data) ){
 				alertData = data;
 				showAlert(data);
