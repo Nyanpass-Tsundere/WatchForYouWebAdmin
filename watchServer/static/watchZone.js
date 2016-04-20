@@ -107,11 +107,11 @@ function updateClick(click,pos) {
 function writeZoneToMenu(key,val) {
 	if (val[5] === 0) {
 		stat = "";
-		setting = "<a href=\"javascript: changeZoneAlert("+val[0]+",1);\" class=\"item\">變更警示模式</a>"
+		setting = "<a href=\"javascript: changeZoneAlert(\'"+val[0]+"\',1);\" class=\"item\">變更警示模式</a>"
 	}
 	else {
 		stat = "<span class=\"AlertArea\">(強制警示)</span>";
-		setting = "<a href=\"javascript: changeZoneAlert("+val[0]+",0);\" class=\"item\">變更警示模式</a>"
+		setting = "<a href=\"javascript: changeZoneAlert(\'"+val[0]+"\',0);\" class=\"item\">變更警示模式</a>"
 	}
 	setting+="<a href=\"javascript: renameZone(\'"+val[0]+"\');\" class=\"renameZone item\">改名</a>"
 	setting+="<a href=\"javascript: delZone(\'"+val[0]+"\');\" class=\"delZone item\">刪除</a>"

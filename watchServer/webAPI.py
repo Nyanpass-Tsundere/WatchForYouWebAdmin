@@ -141,7 +141,7 @@ def getNewAlert():
 
     alertLog = tail(alert_log,30)
 
-    nearTime = datetime.now() + timedelta(minutes=30)
+    nearTime = datetime.now() - timedelta(minutes=30)
     nearTimeStr = format(nearTime, t_format)
     print(nearTimeStr)
 
