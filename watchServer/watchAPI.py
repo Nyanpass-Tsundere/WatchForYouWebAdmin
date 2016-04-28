@@ -76,11 +76,11 @@ def upload():
     ## ref: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing/20434019#20434019
     for beacon in fullBeacons:
         ratio = beacon['rssi'] / beacon['measuredPower']
-        #if ( ratio < 1.0 ):
-        #    beacon['DIST'] = pow(ratio,10);
-        #else:
-        #    beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
-        beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        if ( ratio < 1.0 ):
+            beacon['DIST'] = pow(ratio,10);
+        else:
+            beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        ##beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
         ## lookup beacon locates
         try:
             beacon['MapID'] = beaconsMap[beacon['macAddress']][0]
@@ -103,7 +103,7 @@ def upload():
     beaconLocs = []
     beaconDist = []
     noEnoughtBeacons = False
-    for i in [0]:
+    for i in [0,1,2]:
         try:
             beaconDist.append(orderBeacons[i]['DIST'])
             beaconLocs.append(orderBeacons[i]['Locate'])
