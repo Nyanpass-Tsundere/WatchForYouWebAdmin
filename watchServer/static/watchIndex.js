@@ -31,7 +31,7 @@ function getWatchs() {
 			$( "<a/>", {
 				"class": "item",
 				"id": "watch-"+key,
-				"href": "javascript: setWatch("+key+");",
+				"href": "javascript: setWatchClick("+key+");",
 				html: val.name
 			}).appendTo( "#watchList" );
 			r.resolve();
@@ -50,7 +50,7 @@ function setWatch(watchID) {
 	startMoving(watchs[watchID]['ID'],1)
 }
 
-function setWatch(watchID) {
+function setWatchClick(watchID) {
 	if ( cur_watch >= 0 ) {
 		$("#watch-"+cur_watch).removeClass("active");
 		stopMoving()
@@ -58,6 +58,7 @@ function setWatch(watchID) {
 	$("#watch-"+watchID).addClass("active");
 	cur_watch = watchID;
 	startMoving(watchs[watchID]['ID'],1)
+	movePos(maps[cur_map].size[0],maps[cur_map].size[1]+50)
 }
 
 // functions for the moving DOT

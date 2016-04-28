@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, request
-from watchDB import watchSession, watch, navi, watchManager, block, zone
+from watchDB import watchSession, watch, watchManager, block, zone
 
 
 import time, json
@@ -76,11 +76,11 @@ def upload():
     ## ref: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing/20434019#20434019
     for beacon in fullBeacons:
         ratio = beacon['rssi'] / beacon['measuredPower']
-        #if ( ratio < 1.0 ):
-        #    beacon['DIST'] = pow(ratio,10);
-        #else:
-        #    beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
-        beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        if ( ratio < 1.0 ):
+            beacon['DIST'] = pow(ratio,10);
+        else:
+            beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
+        ##beacon['DIST'] = (0.89976)*pow(ratio,7.7095) + 0.111;
         ## lookup beacon locates
         try:
             beacon['MapID'] = beaconsMap[beacon['macAddress']][0]
@@ -153,6 +153,9 @@ def upload_xy():
     
 @watchAPI.route('/getRoute',methods=['POST'])
 def getPATH():
+    from watchDB import navi
+    a = navi()
+
     ID = request.form.get('ID')
     if ID == None:
         return json.dumps([-1,"noID"])
@@ -197,8 +200,8 @@ def getPATH():
         door = eval(tarZone[2])
 
     print([loc[2],cur_block,door])
-    navi.go(int(loc[2]),cur_block,door)
-    route = navi.getShortest()
+    a.go(int(loc[2]),cur_block,door)
+    route = a.getShortest()
     if route == None:
         return json.dumps([-5,"no route exist"])
 

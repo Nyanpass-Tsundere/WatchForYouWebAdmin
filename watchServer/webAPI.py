@@ -139,9 +139,9 @@ def getNewAlert():
     from setting import alert_log, t_format
     from datetime import datetime, timedelta
 
-    alertLog = tail(alert_log,30)
+    alertLog = tail(alert_log,30,[0,1,2,3])
 
-    nearTime = datetime.now() + timedelta(minutes=30)
+    nearTime = datetime.now() - timedelta(minutes=30)
     nearTimeStr = format(nearTime, t_format)
     print(nearTimeStr)
 
