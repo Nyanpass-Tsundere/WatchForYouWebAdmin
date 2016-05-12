@@ -4,7 +4,7 @@
 
 這個專案還有其他的部分，各部分功能請參考下面的「專案架構」：
 
- - [手錶程式](WatchForYouUploader)
+ - [手錶程式](https://github.com/Nyanpass-Tsundere/WatchForYouUploader)
  - [門禁讀卡機程式](https://github.com/Nyanpass-Tsundere/WatchForYouDoor)
 
 本程式使用到的框架如下：
